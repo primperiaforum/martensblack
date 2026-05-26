@@ -209,8 +209,9 @@ h1, h2, h3 {
 .hero__content {
   position: relative;
   z-index: 2;
-  width: calc(100% - clamp(32px, 6vw, 96px));
-  max-width: none;
+  width: min(100% - 32px, var(--container));
+  max-width: var(--container);
+  margin-inline: auto;
   padding: 116px 0 38px;
 }
 
@@ -1483,7 +1484,7 @@ h1, h2, h3 {
   .section { padding: 58px 0; }
   .hero { min-height: auto; }
   .hero__content {
-    width: calc(100% - 24px);
+    width: min(100% - 24px, var(--container));
     padding-bottom: 24px;
   }
   .eyebrow { font-size: 20px; }
