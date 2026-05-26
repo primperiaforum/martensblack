@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="АГРОПРОДМАШ 2026: деловая конференция о стратегических вызовах индустрии готовой еды, технологиях, фабриках-кухнях, автоматизации и регулировании.">
+  <title>АГРОПРОДМАШ 2026 | Готовая еда</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:ital,wght@0,400;0,500;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header" data-header>
+    <a class="brand" href="#top" aria-label="АГРОПРОДМАШ 2026">
+      <img class="brand__logo" src="APM_logo.png" alt="АГРОПРОДМАШ">
+      <span class="brand__text">
+        <strong>АГРОПРОДМАШ 2026</strong>
+        <small class="brand__date">1 ОКТЯБРЯ 2026</small>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav class="site-nav" id="site-nav" data-nav>
+      <a href="#audience">Для кого</a>
+      <a href="#program">Программа</a>
+      <a href="#gallery">Галерея</a>
+      <a href="#registration">Регистрация</a>
+      <a href="#speaker-contact">Контакты для спикеров</a>
+    </nav>
+
+    <a class="header-cta" href="#registration">Регистрация</a>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__media" aria-hidden="true">
+        <video class="hero__video" autoplay loop muted playsinline preload="auto">
+          <source src="IMG_5091.MP4" type="video/mp4">
+        </video>
+      </div>
+      <div class="hero__overlay"></div>
+      <div class="hero__content container">
+        <p class="eyebrow">Всероссийская деловая конференция</p>
+        <h1 id="hero-title">Стратегические вызовы АПК: Готовая Еда</h1>
+        <p class="hero__lead">Получите карту решений, которые помогут производить готовую еду быстрее, безопаснее и прибыльнее в новой рыночной реальности.</p>
+        <div class="hero__meta" aria-label="Данные события">
+          <span>Москва, Экспоцентр</span>
+          <span>Октябрь 2026</span>
+          <a href="https://www.agroprodmash-expo.ru/" target="_blank" rel="noopener">Выставка АГРОПРОДМАШ</a>
+        </div>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#registration">Зарегистрироваться бесплатно</a>
+          <a class="hero__link" href="#program">Смотреть программу</a>
+        </div>
+      </div>
+      <div class="hero__stats container" aria-label="Ключевые темы конференции">
+        <article>
+          <strong>4</strong>
+          <span>сессии: рынок, производство, технологии, регулирование</span>
+        </article>
+        <article>
+          <strong>2027</strong>
+          <span>горизонт решений для готовой еды и фабрик-кухонь</span>
+        </article>
+        <article>
+          <strong>B2B</strong>
+          <span>аудитория управленцев, технологов и закупщиков</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="section section--light" aria-labelledby="why-title">
+      <div class="container split">
+        <div class="section__intro">
+          <p class="eyebrow">Почему сейчас</p>
+          <h2 id="why-title">Рынок готовой еды перестал быть нишей. Теперь это операционная система ритейла, HoReCa и доставки.</h2>
+        </div>
+        <div class="lead-copy">
+          <p>Конференция помогает производителям и агрокомпаниям нащупать дорогу в новую рыночную реальность: меняется покупатель, растёт спрос на готовые решения, обостряется конкуренция за маржу, качество и скорость вывода продукта на полку.</p>
+          <p>Главный фокус — не абстрактные тренды, а решения, которые влияют на ассортимент, производство, логистику, безопасность, прослеживаемость и экономику продукта.</p>
+        </div>
+      </div>
+      <div class="container market-visual" aria-hidden="true">
+        <canvas id="market-visual-canvas"></canvas>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="benefits-title">
+      <div class="container">
+        <div class="section__head">
+          <p class="eyebrow">Выгоды от участия</p>
+          <h2 id="benefits-title">Четыре причины быть в зале</h2>
+        </div>
+        <div class="benefits-grid">
+          <article class="benefit-card">
+            <span class="benefit-card__icon" aria-hidden="true">01</span>
+            <h3>Инсайды из первых рук</h3>
+            <p>Аналитика рынка, ниши роста, маржинальность и портрет покупателя от экспертов FMCG, ритейла и отраслевых ассоциаций.</p>
+          </article>
+          <article class="benefit-card">
+            <span class="benefit-card__icon" aria-hidden="true">02</span>
+            <h3>Технологии на практике</h3>
+            <p>Оборудование, заморозка, упаковка, автоматизация, ИИ и санитарный дизайн в привязке к реальной экономике производства.</p>
+          </article>
+          <article class="benefit-card">
+            <span class="benefit-card__icon" aria-hidden="true">03</span>
+            <h3>Нетворкинг с рынком</h3>
+            <p>Производители, фабрики-кухни, dark kitchen, ритейл, HoReCa, поставщики решений и технологические специалисты в одном пространстве.</p>
+          </article>
+          <article class="benefit-card">
+            <span class="benefit-card__icon" aria-hidden="true">04</span>
+            <h3>Диалог о правилах игры</h3>
+            <p>ХАССП, маркировка, прослеживаемость, безопасность, требования ритейла и ответственность производителя без бюрократического тумана.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--light" id="audience" aria-labelledby="audience-title">
+      <div class="container">
+        <div class="section__head section__head--wide">
+          <p class="eyebrow">Кому подойдет мероприятие</p>
+          <h2 id="audience-title">Для управленцев и специалистов, которые отвечают за рост, качество и экономику готовой еды</h2>
+        </div>
+        <div class="audience-tags" aria-label="Целевая аудитория конференции">
+          <span>Собственники бизнеса</span>
+          <span>Генеральные директора</span>
+          <span>Коммерческие директора</span>
+          <span>Главные технологи</span>
+          <span>Директора фабрик-кухонь</span>
+          <span>Руководители производств</span>
+          <span>Закупщики ритейла</span>
+          <span>Категорийные менеджеры</span>
+          <span>HoReCa и кейтеринг</span>
+          <span>Dark kitchen</span>
+          <span>R&amp;D и качество</span>
+          <span>Поставщики оборудования</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--dark" aria-labelledby="map-title">
+      <div class="container">
+        <div class="section__head">
+          <p class="eyebrow">Карта индустрии</p>
+          <h2 id="map-title">От спроса до полки: где в 2026 году рождается прибыль готовой еды</h2>
+        </div>
+        <div class="value-chain" aria-label="Карта цепочки готовой еды">
+          <article>
+            <span>01</span>
+            <h3>Спрос</h3>
+            <p>Покупатель, поводы потребления, новые домохозяйства, доставка.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>R&amp;D</h3>
+            <p>Рецептуры, ассортимент, meal-kit, ресторанное качество в упаковке.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Производство</h3>
+            <p>Фабрики-кухни, dark kitchen, линии, персонал, потери.</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>Технологии</h3>
+            <p>IQF, MAP, фасовка, ИИ, прогнозирование, автоматизация.</p>
+          </article>
+          <article>
+            <span>05</span>
+            <h3>Канал</h3>
+            <p>Ритейл, HoReCa, СТМ, e-commerce, speed-to-shelf.</p>
+          </article>
+          <article>
+            <span>06</span>
+            <h3>Контроль</h3>
+            <p>ХАССП, маркировка, микробиология, прослеживаемость.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section program-section" id="program" aria-labelledby="program-title">
+      <div class="container">
+        <div class="section__head section__head--wide">
+          <p class="eyebrow">Деловая программа</p>
+          <h2 id="program-title">Четыре сессии о рынке, фабриках-кухнях, технологиях и регулировании</h2>
+          <p class="program-note">* - Состав спикеров и отдельные темы могут быть уточнены программным комитетом.</p>
+        </div>
+
+        <div class="program-tabs" aria-label="Навигация по сессиям">
+          <button class="program-tab is-active" type="button" data-session-tab="session-1">Сессия 1</button>
+          <button class="program-tab" type="button" data-session-tab="session-2">Сессия 2</button>
+          <button class="program-tab" type="button" data-session-tab="session-3">Сессия 3</button>
+          <button class="program-tab" type="button" data-session-tab="session-4">Сессия 4</button>
+        </div>
+
+        <div class="program-panels">
+          <article class="program-panel" id="session-1">
+            <div class="session">
+              <div class="session__time">
+                <span>11:00 - 12:30</span>
+                <small>90 минут</small>
+              </div>
+              <div class="session__body">
+                <p class="session__format">Панельная дискуссия + аналитические доклады</p>
+                <h3>Новый стол: потребительская революция и стратегические вызовы индустрии и рынка готовой еды</h3>
+                <p>Российский рынок готовой еды вступил в период структурных изменений — и они не закончатся в ближайшие годы. Молодые городские жители всё реже стоят у плиты: одиночные домохозяйства, плотный рабочий график и нормализация доставки формируют устойчивый спрос на качественную готовую еду без усилий. Производители отвечают на этот запрос адаптацией ассортимента: малые порции, высокая степень готовности, ресторанное качество в упаковке.</p>
+                <p>Мировые тренды — прежде всего японский и южнокорейский опыт — показывают, куда движется этот рынок: Россия идёт тем же путём с отставанием в 2–4 года. Открывающая сессия задаёт аналитическую рамку для всей конференции: что происходит с рынком, где незанятые ниши, кто выигрывает и где сосредоточена высокая маржинальность.</p>
+                <button class="accordion-trigger" type="button" aria-expanded="true" aria-controls="topics-1">Ключевые темы</button>
+                <div class="accordion-content is-open" id="topics-1">
+                  <ul>
+                    <li>Структура потребления готовой еды в России: объём, сегменты, динамика 2022-2026.</li>
+                    <li>Портрет нового покупателя: одиночные домохозяйства, занятая молодёжь, поколение, которое не готовит.</li>
+                    <li>Наиболее частые поводы потребления: когда, где и почему покупают готовое.</li>
+                    <li>Незанятые ниши: где ещё нет сильных игроков и что это значит для производителей.</li>
+                    <li>Источники высокой маржинальности: в каких сегментах и форматах зарабатывают лучшие игроки.</li>
+                    <li>Мировые тренды: японский, корейский, европейский опыт и горизонт для России на 1-3 года.</li>
+                    <li>HoReCa как референс и канал: как ресторанная культура формирует запрос к производителям.</li>
+                    <li>Региональная экспансия: Москва задаёт тон, регионы догоняют — с каким лагом.</li>
+                    <li>Прогноз до 2029 года: ёмкость рынка и инвестиционные приоритеты.</li>
+                  </ul>
+                </div>
+                <div class="speaker-grid compact" aria-label="Спикеры первой сессии">
+                  <article class="speaker-card"><img src="https://placehold.co/120x120/0c0d10/ffffff?text=ИФ" alt="Иван Федяков" loading="lazy"><h4>Иван Федяков</h4><p>Генеральный директор, INFOLine</p></article>
+                  <article class="speaker-card"><img src="https://placehold.co/120x120/0c0d10/ffffff?text=АД" alt="Андрей Дальнов" loading="lazy"><h4>Андрей Дальнов</h4><p>Руководитель Центра отраслевой экспертизы, Россельхозбанк</p></article>
+                  <article class="speaker-card"><img src="https://placehold.co/120x120/0c0d10/ffffff?text=СЮ" alt="Сергей Юшин" loading="lazy"><h4>Сергей Юшин</h4><p>Ответственный секретарь, Национальная мясная ассоциация</p></article>
+                  <article class="speaker-card"><img src="https://placehold.co/120x120/0c0d10/ffffff?text=АК" alt="Андрей Кривенко" loading="lazy"><h4>Андрей Кривенко</h4><p>Основатель, ВкусВилл</p></article>
+                  <article class="speaker-card speaker-card--representative"><img src="https://placehold.co/120x120/1e1f2a/ffffff?text=Р" alt="Представитель HoReCa" loading="lazy"><h4>Представитель HoReCa</h4><p>Директор по закупкам, крупная сеть или агрегатор доставки</p></article>
+                  <article class="speaker-card speaker-card--representative"><img src="https://placehold.co/120x120/1e1f2a/ffffff?text=X5" alt="Представитель X5 Group" loading="lazy"><h4>Представитель X5 Group</h4><p>Директор по категории готовой еды, уточняется</p></article>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="program-panel" id="session-2">
+            <div class="session">
+              <div class="session__time">
+                <span>13:00 - 14:30</span>
+                <small>90 минут</small>
+              </div>
+              <div class="session__body">
+                <p class="session__format">Кейс-сессия + панельная дискуссия</p>
+                <h3>От цеха до чека: фабрики-кухни, dark kitchen и новые форматы готовой еды</h3>
+                <p>Фабрики-кухни крупнейших ретейлеров, dark kitchen агрегаторов доставки, производственные базы кейтеринга — все они решают одну задачу: производить готовую еду предсказуемого качества, в нужном объёме, с минимальными потерями по всей цепочке.</p>
+                <p>Параллельно на рынок выходят нестандартные форматы: meal-kit, нарезка, очищенные и фасованные продукты, блюда по экзотическим рецептурам. Как вывести такой продукт через ретейлеров и HoReCa, какие требовались вложения, какие каналы сработали — и как выстроить маркетинг, который обеспечит объёмы? В этой сессии — реальный опыт производителей, закупщиков и операторов, которые уже прошли этот путь.</p>
+                <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="topics-2">Ключевые темы</button>
+                <div class="accordion-content" id="topics-2">
+                  <ul>
+                    <li>Архитектура фабрики-кухни ритейла: пространство, оборудование, процессы.</li>
+                    <li>Dark kitchen: бизнес-модель, масштабирование, специфика оборудования.</li>
+                    <li>Meal-kit как формат: производство, логистика, позиционирование — что работает в России.</li>
+                    <li>Нестандартные продукты для готового формата: нарезка, очищенные и фасованные продукты, экзотические рецептуры.</li>
+                    <li>Вывод на рынок через сети и HoReCa: что получилось, где возникали сложности, сколько стоило.</li>
+                    <li>Маркетинг готовой еды: концепция, цена, дегустации, планирование объёмов.</li>
+                    <li>Холодовая цепь и speed-to-shelf как конкурентное преимущество.</li>
+                    <li>Себестоимость и ROI автоматизации: где оборудование реально даёт экономику.</li>
+                  </ul>
+                </div>
+                <div class="speaker-grid compact" aria-label="Спикеры второй сессии">
+                  <article class="speaker-card speaker-card--representative"><img src="https://placehold.co/120x120/0c0d10/ffffff?text=Л" alt="Представитель Ленты" loading="lazy"><h4>Представитель Ленты</h4><p>Директор производства или руководитель фабрики-кухни</p></article>
+                  <article class="speaker-card speaker-card--representative"><img src="https://placehold.co/120x120/0c0d10/ffffff?text=ВВ" alt="Представитель ВкусВилл" loading="lazy"><h4>Представитель ВкусВилл</h4><p>Директор по производству кулинарии</p></article>
+                  <article class="speaker-card speaker-card--representative"><img src="https://placehold.co/120x120/0c0d10/ffffff?text=DS" alt="Представитель доставки" loading="lazy"><h4>Представитель доставки</h4><p>Операционный директор dark kitchen, уточняется</p></article>
+                  <article class="speaker-card"><img src="https://placehold.co/120x120/1e1f2a/ffffff?text=RT" alt="Закупщик ритейла" loading="lazy"><h4>Закупщик ритейла</h4><p>Категорийный менеджер готовой еды</p></article>
+                  <article class="speaker-card"><img src="https://placehold.co/120x120/0c0d10/ffffff?text=ВЛ" alt="Виктор Линник" loading="lazy"><h4>Виктор Линник</h4><p>Совладелец, Мираторг</p></article>
+                  <article class="speaker-card"><img src="https://placehold.co/120x120/1e1f2a/ffffff?text=MK" alt="Маркетолог готовой еды" loading="lazy"><h4>Эксперт по брендингу</h4><p>Упаковка, дегустации, digital, объёмное планирование</p></article>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="program-panel" id="session-3">
+            <div class="session">
+              <div class="session__time">
+                <span>15:00 - 16:00</span>
+                <small>60 минут</small>
+              </div>
+              <div class="session__body">
+                <p class="session__format">Технологические доклады + дискуссия</p>
+                <h3>Через технологии к прибыли: оборудование, заморозка, автоматизация и ИИ</h3>
+                <p>Выбор технологии заморозки — это не техническое решение, это решение о качестве продукта через полгода. Тип упаковочной линии — это решение о себестоимости, экологичности и сроке хранения одновременно. Степень автоматизации — это решение о зависимости от рынка труда и масштабируемости бизнеса.</p>
+                <p>В этой сессии — конкретные технологии, конкретные результаты и честный разговор о том, что окупается и что нет. Отдельно — новинки, позволяющие снизить издержки, упростить логистику и улучшить качество: от шоковой заморозки до ИИ-оптимизации производственных процессов.</p>
+                <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="topics-3">Ключевые темы</button>
+                <div class="accordion-content" id="topics-3">
+                  <ul>
+                    <li>IQF, шоковая и криогенная заморозка: сравнение по продуктам, качеству и стоимости.</li>
+                    <li>Оборудование для нарезки и термообработки: ключевые параметры выбора для готовой еды.</li>
+                    <li>Автоматизация порционирования и фасовки: ROI и сроки окупаемости для разных масштабов производства.</li>
+                    <li>MAP-упаковка, активные барьерные технологии и продление сроков хранения.</li>
+                    <li>Санитарный дизайн помещений: требования, решения, типичные ошибки.</li>
+                    <li>ИИ-оптимизация: прогнозирование потребления, рецептуры, снижение отходов.</li>
+                    <li>Мировые инновации: что применяют в Японии, Германии, Нидерландах — и что придёт в Россию.</li>
+                    <li>Импортозамещение и локализация: реальное состояние рынка оборудования в 2026 году.</li>
+                  </ul>
+                </div>
+                <div class="speaker-grid compact" aria-label="Спикеры третьей сессии">
+                  <article class="speaker-card"><img src="https://placehold.co/120x120/0c0d10/ffffff?text=АЛ" alt="Андрей Лисицын" loading="lazy"><h4>Андрей Лисицын</h4><p>ФГБНУ ВНИИМП им. В.М. Горбатова</p></article>
+                  <article class="speaker-card"><img src="https://placehold.co/120x120/1e1f2a/ffffff?text=З" alt="Главный технолог замороженной готовой еды" loading="lazy"><h4>Главный технолог</h4><p>Производитель замороженной готовой еды</p></article>
+                  <article class="speaker-card"><img src="https://placehold.co/120x120/1e1f2a/ffffff?text=EQ" alt="Поставщик оборудования" loading="lazy"><h4>Поставщик оборудования</h4><p>Экспонент АГРОПРОДМАШ 2026</p></article>
+                  <article class="speaker-card"><img src="https://placehold.co/120x120/1e1f2a/ffffff?text=RD" alt="R&D специалист" loading="lazy"><h4>Руководитель R&amp;D</h4><p>Поставщик ингредиентов и функциональных добавок</p></article>
+                  <article class="speaker-card"><img src="https://placehold.co/120x120/1e1f2a/ffffff?text=AI" alt="Эксперт по автоматизации" loading="lazy"><h4>Эксперт по автоматизации</h4><p>Производственная компания с автоматизированными линиями</p></article>
+                  <article class="speaker-card"><img src="https://placehold.co/120x120/1e1f2a/ffffff?text=НИИ" alt="Научный сотрудник" loading="lazy"><h4>Научный сотрудник</h4><p>Всероссийский НИИ пищевых технологий</p></article>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="program-panel" id="session-4">
+            <div class="session">
+              <div class="session__time">
+                <span>16:20 - 17:20</span>
+                <small>60 минут</small>
+              </div>
+              <div class="session__body">
+                <p class="session__format">Панельная дискуссия с регуляторами и производителями</p>
+                <h3>Прозрачная цепочка: безопасность, прослеживаемость и регулирование готовой еды</h3>
+                <p>Безопасность готовой еды — больше не только про ХАССП и лабораторию. Это про цифровую прослеживаемость на каждом этапе от поставщика сырья до покупателя. Это про маркировку, которая становится обязательной. Это про ответственность, которая теперь персонифицирована и задокументирована.</p>
+                <p>Законодательство в этой сфере активно меняется, требования ужесточаются, а производители — особенно малый и средний бизнес — часто узнают об изменениях постфактум. Финальная сессия — прямой разговор между регуляторами, производителями и ретейлерами о том, что уже обязательно, что будет обязательно в ближайшие два года, и как выстроить систему контроля, которая защищает бизнес, а не только выполняет требования.</p>
+                <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="topics-4">Ключевые темы</button>
+                <div class="accordion-content" id="topics-4">
+                  <ul>
+                    <li>Актуальные изменения в регулировании производства и оборота готовой еды: 2025-2027.</li>
+                    <li>Цифровая маркировка и прослеживаемость: Честный знак, ГИС МТ.</li>
+                    <li>ХАССП на практике: рабочая система вместо бумажной формальности.</li>
+                    <li>Микробиологический контроль, продление сроков и нормативные рамки.</li>
+                    <li>Ответственность производителя: претензии, отзывы продукции, репутационные риски.</li>
+                    <li>Экспортные стандарты: требования рынков ЕАЭС и возможности для российских производителей.</li>
+                    <li>Требования ритейла к поставщикам: что проверяют Лента и ВкусВилл перед вводом в матрицу.</li>
+                  </ul>
+                </div>
+                <div class="speaker-grid compact" aria-label="Спикеры четвертой сессии">
+                  <article class="speaker-card speaker-card--representative"><img src="https://placehold.co/120x120/1e1f2a/ffffff?text=МПТ" alt="Представитель Минпромторга" loading="lazy"><h4>Представитель Минпромторга</h4><p>Департамент пищевой промышленности</p></article>
+                  <article class="speaker-card speaker-card--representative"><img src="https://placehold.co/120x120/1e1f2a/ffffff?text=РПН" alt="Представитель Роспотребнадзора" loading="lazy"><h4>Представитель Роспотребнадзора</h4><p>Надзор за безопасностью пищевых продуктов</p></article>
+                  <article class="speaker-card"><img src="https://placehold.co/120x120/0c0d10/ffffff?text=АЛ" alt="Андрей Лисицын" loading="lazy"><h4>Андрей Лисицын</h4><p>ВНИИМП им. В.М. Горбатова, стандартизация</p></article>
+                  <article class="speaker-card"><img src="https://placehold.co/120x120/1e1f2a/ffffff?text=ЧЗ" alt="Представитель Честного знака" loading="lazy"><h4>Представитель ЦРПТ</h4><p>Маркировка и прослеживаемость</p></article>
+                  <article class="speaker-card"><img src="https://placehold.co/120x120/1e1f2a/ffffff?text=QA" alt="Директор по качеству" loading="lazy"><h4>Директор по качеству</h4><p>Лента или ВкусВилл, требования к поставщикам</p></article>
+                  <article class="speaker-card"><img src="https://placehold.co/120x120/1e1f2a/ffffff?text=LAW" alt="Юрист по пищевому праву" loading="lazy"><h4>Юрист по пищевому праву</h4><p>Техническое регулирование, отзывы, ЕАЭС</p></article>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section expo" aria-labelledby="expo-title">
+      <div class="container expo__grid">
+        <div class="expo__brand-wrap">
+          <h2 id="expo-title">О выставке:</h2>
+          <div class="expo__brand">
+            <img src="APM_logo.png" alt="АГРОПРОДМАШ">
+          </div>
+        </div>
+        <div class="expo__copy">
+          <p><strong>«АГРОПРОДМАШ»</strong> – международная выставка оборудования, технологий, сырья и ингредиентов для пищевой и перерабатывающей промышленности.</p>
+          <p>Преимущество и уникальность выставки заключается в том, что экспозиция демонстрирует оборудование и технологии для всей цепочки: от производства сырья и ингредиентов до выпуска готового продукта, его упаковки, контроля качества, охлаждения, хранения и логистических решений.</p>
+          <a class="btn btn--secondary" href="https://www.agroprodmash-expo.ru/" target="_blank" rel="noopener">Перейти на сайт выставки</a>
+        </div>
+        <div class="route-list" aria-label="Технологический маршрут">
+          <span>Оборудование</span>
+          <span>IQF и шоковая заморозка</span>
+          <span>MAP-упаковка</span>
+          <span>Функциональные ингредиенты</span>
+          <span>Автоматизация линий</span>
+          <span>Маркировка и контроль</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section history" aria-labelledby="history-title">
+      <div class="container">
+        <div class="section__head">
+          <p class="eyebrow">Как это было</p>
+          <h2 id="history-title">Опыт отраслевых встреч прошлых лет</h2>
+          <p>Здесь появятся фотографии и короткие итоги мероприятий. Пока оставлены технологичные заглушки для будущих материалов.</p>
+        </div>
+        <div class="history-grid" aria-label="Архив мероприятий">
+          <article class="history-card"><span>2020</span></article>
+          <article class="history-card"><span>2021</span></article>
+          <article class="history-card"><span>2022</span></article>
+          <article class="history-card"><span>2023</span></article>
+          <article class="history-card"><span>2024</span></article>
+          <article class="history-card"><span>2025</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--light" id="gallery" aria-labelledby="gallery-title">
+      <div class="container">
+        <div class="section__head">
+          <p class="eyebrow">Атмосфера</p>
+          <h2 id="gallery-title">Масштаб отрасли в одном пространстве</h2>
+        </div>
+        <div class="gallery-grid">
+          <article class="gallery-card">
+            <img src="ЗалКонференции.jpg" alt="Зал конференции" loading="lazy">
+            <span>Зал конференции</span>
+          </article>
+          <article class="gallery-card">
+            <img src="Выставочная экспозиция.jpg" alt="Выставочная экспозиция" loading="lazy">
+            <span>Выставочная экспозиция</span>
+          </article>
+          <article class="gallery-card">
+            <img src="Производственная линия.webp" alt="Производственная линия" loading="lazy">
+            <span>Производственная линия</span>
+          </article>
+          <article class="gallery-card">
+            <img src="Упаковочные технологии.webp" alt="Упаковочные технологии" loading="lazy">
+            <span>Упаковочные технологии</span>
+          </article>
+          <article class="gallery-card">
+            <img src="Нетворкинг.jpg" alt="Нетворкинг" loading="lazy">
+            <span>Нетворкинг</span>
+          </article>
+          <article class="gallery-card">
+            <img src="Готовая еда будущего.webp" alt="Готовая еда будущего" loading="lazy">
+            <span>Готовая еда будущего</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section registration" id="registration" aria-labelledby="registration-title">
+      <div class="container registration__grid">
+        <div class="registration__copy">
+          <p class="eyebrow">Бесплатная регистрация</p>
+          <h2 id="registration-title">Зарегистрируйтесь на конференцию</h2>
+          <p>Оставьте данные, и команда организаторов отправит подтверждение участия на email. Участие бесплатное по предварительной регистрации.</p>
+        </div>
+
+        <form class="form" novalidate data-form>
+          <div class="form__row">
+            <label for="firstName">Имя*</label>
+            <input id="firstName" name="firstName" type="text" autocomplete="given-name" required>
+            <small class="form__error"></small>
+          </div>
+          <div class="form__row">
+            <label for="lastName">Фамилия*</label>
+            <input id="lastName" name="lastName" type="text" autocomplete="family-name" required>
+            <small class="form__error"></small>
+          </div>
+          <div class="form__row">
+            <label for="company">Компания*</label>
+            <input id="company" name="company" type="text" autocomplete="organization" required>
+            <small class="form__error"></small>
+          </div>
+          <div class="form__row">
+            <label for="email">Email*</label>
+            <input id="email" name="email" type="email" autocomplete="email" required>
+            <small class="form__error"></small>
+          </div>
+          <div class="form__row">
+            <label for="phone">Телефон*</label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel" required>
+            <small class="form__error"></small>
+          </div>
+          <label class="checkbox">
+            <input name="privacy" type="checkbox" required>
+            <span>Я даю согласие на обработку своих персональных данных в соответствии с <a href="Политика_конфиденциальности_интернет_сайта_—_Империя_Форум.pdf" target="_blank" rel="noopener">политикой обработки персональных данных</a></span>
+          </label>
+          <small class="form__error form__error--checkbox"></small>
+          <button class="btn btn--primary form__submit" type="submit">Отправить заявку</button>
+          <p class="form__success" role="status" aria-live="polite" hidden>Спасибо! Мы отправили подтверждение на ваш email. До встречи на конференции.</p>
+          <!-- TODO: подключить обработчик формы к CRM или backend-эндпоинту. -->
+        </form>
+      </div>
+    </section>
+
+    <section class="section section--light organizers" aria-labelledby="organizers-title">
+      <div class="container">
+        <div class="section__head">
+          <p class="eyebrow">Организаторы</p>
+          <h2 id="organizers-title">Команды, которые собирают выставку и деловую программу</h2>
+        </div>
+        <div class="organizers-list">
+          <article class="organizer-card">
+            <div class="organizer-card__logo">
+              <img src="expocentr_logo.svg" alt="Экспоцентр">
+            </div>
+            <div>
+              <h3>Организатор выставки «Агропродмаш-2026»</h3>
+              <p>АО «Экспоцентр» – всемирно известная российская выставочная компания, неизменно сохраняющая статус ведущего организатора крупнейших в России, СНГ и Восточной Европе международных отраслевых выставок, более чем с 60-летним опытом работы.</p>
+            </div>
+          </article>
+          <article class="organizer-card">
+            <div class="organizer-card__logo">
+              <img src="imperia-forum_logo.svg" alt="Империя Форум">
+            </div>
+            <div>
+              <h3>Организатор конференции «Стратегические вызовы АПК: готовая еда»</h3>
+              <p>Конгрессно-Выставочная Компания «ИМПЕРИЯ ФОРУМ» – организатор деловых мероприятий на агропромышленном рынке, в том числе одного из ключевых отраслевых Форумов «Стратегические вызовы АПК: инвестиции, цифровые технологии, повышение эффективности», и один из ключевых партнеров АО «ЭКСПОЦЕНТР» по организации деловой программы крупнейшей отраслевой выставки «Агропродмаш».</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--light speaker-contact" id="speaker-contact" aria-labelledby="speaker-contact-title">
+      <div class="container speaker-contact__inner">
+        <div>
+          <p class="eyebrow">Программный комитет</p>
+          <h2 id="speaker-contact-title">Хотите выступить с экспертной сессией?</h2>
+          <p>Комитет программы открыт к предложениям от производителей, технологов, регуляторов и компаний, которые готовы показать работающую практику рынка.</p>
+        </div>
+        <div class="contact-card">
+          <strong>Продюсер конференции:<span>Евгений Статецкий</span></strong>
+          <a href="mailto:marketer1@imperia-forums.ru">marketer1@imperia-forums.ru</a>
+          <a class="btn btn--secondary" href="mailto:marketer1@imperia-forums.ru">Связаться с оргкомитетом</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div>
+        <a class="footer__top" href="#top">Наверх</a>
+      </div>
+      <nav aria-label="Юридические ссылки">
+        <a href="Политика_конфиденциальности_интернет_сайта_—_Империя_Форум.pdf" target="_blank" rel="noopener">Политика обработки персональных данных</a>
+        <a href="https://www.agroprodmash-expo.ru/" target="_blank" rel="noopener">Выставка АГРОПРОДМАШ</a>
+        <a href="cookie.html">Условия использования cookie</a>
+      </nav>
+      <div class="footer__logos" aria-label="Логотипы организаторов">
+        <img class="footer__apm" src="APM_logo.png" alt="АГРОПРОДМАШ">
+        <img class="footer__imperia" src="imperia-forum_logo.svg" alt="Империя Форум">
+      </div>
+    </div>
+  </footer>
+
+  <div class="mobile-cta">
+    <a class="btn btn--primary" href="#registration">Зарегистрироваться бесплатно</a>
+  </div>
+
+  <div class="lightbox" role="dialog" aria-modal="true" aria-label="Просмотр фотографии" hidden data-lightbox>
+    <button class="lightbox__close" type="button" aria-label="Закрыть" data-lightbox-close>×</button>
+    <button class="lightbox__nav lightbox__nav--prev" type="button" aria-label="Предыдущее изображение" data-lightbox-prev>‹</button>
+    <img src="" alt="Увеличенная фотография" data-lightbox-image>
+    <button class="lightbox__nav lightbox__nav--next" type="button" aria-label="Следующее изображение" data-lightbox-next>›</button>
+  </div>
+
+  <div class="cookie-banner" role="dialog" aria-live="polite" aria-label="Уведомление об использовании cookie" hidden data-cookie-banner>
+    <p>Мы используем файлы cookie. Чтобы улучшить работу сайта и предоставить вам больше возможностей. Продолжая использовать сайт, вы соглашаетесь с <a href="cookie.html"><strong>условиями использования cookie</strong></a>.</p>
+    <button class="cookie-banner__button" type="button" data-cookie-accept>Понятно</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
