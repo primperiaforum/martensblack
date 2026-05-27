@@ -414,7 +414,7 @@ document.addEventListener("keydown", (event) => {
 
 const form = document.querySelector("[data-form]");
 
-const webhookUrl = "https://reg.imperiaforum.ru/bitrix_hooks/add_deal/";
+const webhookUrl = "https://reg.online-czs.ru/bitrix_hooks/add_deal/";
 
 function setFieldState(input, message) {
   const row = input.closest(".form__row");
