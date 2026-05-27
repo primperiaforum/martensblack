@@ -414,13 +414,7 @@ document.addEventListener("keydown", (event) => {
 
 const form = document.querySelector("[data-form]");
 
-const validators = {
-  firstName: (value) => value.trim().length >= 2 || "Введите имя",
-  lastName: (value) => value.trim().length >= 2 || "Введите фамилию",
-  company: (value) => value.trim().length >= 2 || "Введите компанию",
-  email: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()) || "Введите корректный email",
-  phone: (value) => /^[+()\-\s\d]{7,}$/.test(value.trim()) || "Введите корректный телефон"
-};
+const webhookUrl = "https://reg.imperiaforum.ru/bitrix_hooks/add_deal/";
 
 function setFieldState(input, message) {
   const row = input.closest(".form__row");
@@ -432,17 +426,47 @@ function setFieldState(input, message) {
 }
 
 function validateField(input) {
-  const validator = validators[input.name];
-  if (!validator) return true;
-  const result = validator(input.value);
-  return setFieldState(input, result);
+  const value = input.value.trim();
+
+  if (input.required && !value) {
+    return setFieldState(input, "Заполните поле");
+  }
+
+  if (input.type === "email" && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+    return setFieldState(input, "Введите корректный email");
+  }
+
+  return setFieldState(input, true);
 }
 
 if (form) {
+  const steps = Array.from(form.querySelectorAll("[data-form-step]"));
+  const nextButton = form.querySelector("[data-form-next]");
+  const backButton = form.querySelector("[data-form-back]");
+  const submitButton = form.querySelector(".form__submit");
   const inputs = Array.from(form.querySelectorAll("input[type='text'], input[type='email'], input[type='tel']"));
-  const checkbox = form.querySelector("input[name='privacy']");
+  const checkbox = form.querySelector("input[name='checkbox']");
   const checkboxError = form.querySelector(".form__error--checkbox");
+  const submitError = form.querySelector(".form__error--submit");
   const success = form.querySelector(".form__success");
+  let currentStep = 1;
+
+  function setStep(step) {
+    currentStep = step;
+    steps.forEach((item) => {
+      item.classList.toggle("is-active", item.dataset.formStep === String(step));
+    });
+    if (submitError) submitError.textContent = "";
+  }
+
+  function getStepInputs(step) {
+    const stepNode = form.querySelector(`[data-form-step="${step}"]`);
+    return Array.from(stepNode?.querySelectorAll("input[type='text'], input[type='email'], input[type='tel']") || []);
+  }
+
+  function validateStep(step) {
+    return getStepInputs(step).every(validateField);
+  }
 
   inputs.forEach((input) => {
     input.addEventListener("input", () => validateField(input));
@@ -453,19 +477,55 @@ if (form) {
     if (checkboxError) checkboxError.textContent = checkbox.checked ? "" : "Подтвердите согласие";
   });
 
-  form.addEventListener("submit", (event) => {
+  nextButton?.addEventListener("click", () => {
+    if (validateStep(1)) setStep(2);
+  });
+
+  backButton?.addEventListener("click", () => {
+    setStep(1);
+  });
+
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
+
+    if (currentStep === 1) {
+      if (validateStep(1)) setStep(2);
+      return;
+    }
+
     const fieldsValid = inputs.every(validateField);
     const privacyValid = Boolean(checkbox?.checked);
 
     if (checkboxError) checkboxError.textContent = privacyValid ? "" : "Подтвердите согласие";
     if (!fieldsValid || !privacyValid) return;
 
-    const payload = Object.fromEntries(new FormData(form).entries());
-    console.log("Registration demo payload:", payload);
-    form.reset();
-    inputs.forEach((input) => input.classList.remove("is-invalid"));
-    if (success) success.hidden = false;
+    if (submitError) submitError.textContent = "";
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = "Отправляем...";
+    }
+
+    try {
+      await fetch(webhookUrl, {
+        method: "POST",
+        body: new FormData(form),
+        mode: "no-cors",
+        credentials: "include"
+      });
+
+      form.reset();
+      inputs.forEach((input) => input.classList.remove("is-invalid"));
+      steps.forEach((step) => { step.hidden = true; });
+      if (success) success.hidden = false;
+    } catch (error) {
+      if (submitError) {
+        submitError.textContent = "Не удалось отправить заявку. Попробуйте ещё раз.";
+      }
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = "Отправить заявку";
+      }
+    }
   });
 }
 

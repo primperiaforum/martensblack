@@ -1072,14 +1072,39 @@ h1, h2, h3 {
   box-shadow: var(--shadow);
 }
 
+.form__step {
+  display: none;
+  gap: 14px;
+}
+
+.form__step.is-active {
+  display: grid;
+}
+
 .form__row { display: grid; gap: 7px; }
 
 .form label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.form .checkbox {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  clip-path: none;
+  white-space: normal;
   color: rgba(255, 255, 255, 0.65);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.04em;
-  text-transform: uppercase;
 }
 
 .form input[type="text"],
@@ -1093,6 +1118,11 @@ h1, h2, h3 {
   background: var(--bg-primary);
   color: var(--text-main);
   transition: border-color 0.18s ease;
+}
+
+.form input::placeholder {
+  color: rgba(255, 255, 255, 0.48);
+  opacity: 1;
 }
 
 .form input[type="text"]:focus,
@@ -1113,26 +1143,79 @@ h1, h2, h3 {
 
 .checkbox {
   display: grid;
-  grid-template-columns: 20px 1fr;
-  gap: 10px;
+  grid-template-columns: 22px 1fr;
+  gap: 12px;
   align-items: start;
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: 11px;
+  line-height: 1.45;
 }
 
-.checkbox input { margin-top: 3px; }
+.checkbox input {
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  accent-color: var(--accent-str);
+}
+
 .checkbox a { color: var(--accent-str); }
-.form__submit { width: 100%; }
+
+.form__next,
+.form__submit {
+  width: 100%;
+}
+
+.form__actions {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 12px;
+}
+
+.form__back {
+  border: 1px solid #656870;
+  background: transparent;
+  color: #656870;
+  box-shadow: none;
+}
+
+.form__back:hover {
+  background: rgba(101, 104, 112, 0.10);
+  box-shadow: none;
+}
 
 .form__success {
   margin: 0;
-  padding: 14px;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 28px 22px;
   border-radius: var(--radius);
-  background: rgba(249, 115, 22, 0.12);
-  border: 1px solid rgba(249, 115, 22, 0.25);
-  color: #ffb87a;
-  font-weight: 700;
-  font-size: 13px;
+  background: #ffffff;
+  border: 1px solid #ffffff;
+  color: #000000;
+  text-align: center;
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.form__success[hidden] {
+  display: none;
+}
+
+.form__success span {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #16a34a;
+  color: #ffffff;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.form__success p {
+  margin: 0;
 }
 
 /* ── SPEAKER CONTACT ── */

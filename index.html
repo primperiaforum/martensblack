@@ -431,40 +431,76 @@
           <p>Оставьте данные, и команда организаторов отправит подтверждение участия на email. Участие бесплатное по предварительной регистрации.</p>
         </div>
 
-        <form class="form" novalidate data-form>
-          <div class="form__row">
-            <label for="firstName">Имя*</label>
-            <input id="firstName" name="firstName" type="text" autocomplete="given-name" required>
-            <small class="form__error"></small>
+        <form class="form" action="https://reg.imperiaforum.ru/bitrix_hooks/add_deal/" method="post" novalidate data-form>
+          <input type="hidden" name="title" value="ф-б-АПК-26-09-оф">
+          <input type="hidden" name="id_category" value="27">
+
+          <div class="form__step is-active" data-form-step="1">
+            <div class="form__row">
+              <label for="fname">Имя</label>
+              <input id="fname" name="fname" type="text" autocomplete="given-name" placeholder="Имя" required>
+              <small class="form__error"></small>
+            </div>
+            <div class="form__row">
+              <label for="lname">Фамилия</label>
+              <input id="lname" name="lname" type="text" autocomplete="family-name" placeholder="Фамилия" required>
+              <small class="form__error"></small>
+            </div>
+            <div class="form__row">
+              <label for="tname">Отчество</label>
+              <input id="tname" name="tname" type="text" autocomplete="additional-name" placeholder="Отчество">
+              <small class="form__error"></small>
+            </div>
+            <div class="form__row">
+              <label for="phone">Телефон</label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="Мобильный телефон" required>
+              <small class="form__error"></small>
+            </div>
+            <div class="form__row">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" placeholder="Email" required>
+              <small class="form__error"></small>
+            </div>
+            <button class="btn btn--primary form__next" type="button" data-form-next>Далее</button>
           </div>
-          <div class="form__row">
-            <label for="lastName">Фамилия*</label>
-            <input id="lastName" name="lastName" type="text" autocomplete="family-name" required>
-            <small class="form__error"></small>
+
+          <div class="form__step" data-form-step="2">
+            <div class="form__row">
+              <label for="city">Город</label>
+              <input id="city" name="city" type="text" autocomplete="address-level2" placeholder="Город" required>
+              <small class="form__error"></small>
+            </div>
+            <div class="form__row">
+              <label for="status">Должность</label>
+              <input id="status" name="status" type="text" autocomplete="organization-title" placeholder="Должность" required>
+              <small class="form__error"></small>
+            </div>
+            <div class="form__row">
+              <label for="company">Компания</label>
+              <input id="company" name="company" type="text" autocomplete="organization" placeholder="Компания" required>
+              <small class="form__error"></small>
+            </div>
+            <div class="form__row">
+              <label for="sfera">Сфера</label>
+              <input id="sfera" name="sfera" type="text" placeholder="Сфера деятельности компании" required>
+              <small class="form__error"></small>
+            </div>
+            <label class="checkbox">
+              <input name="checkbox" type="checkbox" value="Да" required>
+              <span>Я ДАЮ СОГЛАСИЕ НА ОБРАБОТКУ СВОИХ ПЕРСОНАЛЬНЫХ ДАННЫХ В СООТВЕТСТВИИ С <a href="https://primperiaforum.github.io/martensblack/%D0%9F%D0%BE%D0%BB%D0%B8%D1%82%D0%B8%D0%BA%D0%B0_%D0%BA%D0%BE%D0%BD%D1%84%D0%B8%D0%B4%D0%B5%D0%BD%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D0%BE%D1%81%D1%82%D0%B8_%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%BD%D0%B5%D1%82_%D1%81%D0%B0%D0%B9%D1%82%D0%B0_%E2%80%94_%D0%98%D0%BC%D0%BF%D0%B5%D1%80%D0%B8%D1%8F_%D0%A4%D0%BE%D1%80%D1%83%D0%BC.pdf" target="_blank" rel="noopener">ПОЛИТИКОЙ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ</a></span>
+            </label>
+            <small class="form__error form__error--checkbox"></small>
+            <div class="form__actions">
+              <button class="btn form__back" type="button" data-form-back>Назад</button>
+              <button class="btn btn--primary form__submit" type="submit">Отправить заявку</button>
+            </div>
           </div>
-          <div class="form__row">
-            <label for="company">Компания*</label>
-            <input id="company" name="company" type="text" autocomplete="organization" required>
-            <small class="form__error"></small>
+
+          <p class="form__error form__error--submit" role="alert"></p>
+          <div class="form__success" role="status" aria-live="polite" hidden>
+            <span aria-hidden="true">✓</span>
+            <p>Спасибо за регистрацию! Ваш билет на конференцию ждёт Вас на почте.</p>
           </div>
-          <div class="form__row">
-            <label for="email">Email*</label>
-            <input id="email" name="email" type="email" autocomplete="email" required>
-            <small class="form__error"></small>
-          </div>
-          <div class="form__row">
-            <label for="phone">Телефон*</label>
-            <input id="phone" name="phone" type="tel" autocomplete="tel" required>
-            <small class="form__error"></small>
-          </div>
-          <label class="checkbox">
-            <input name="privacy" type="checkbox" required>
-            <span>Я даю согласие на обработку своих персональных данных в соответствии с <a href="Политика_конфиденциальности_интернет_сайта_—_Империя_Форум.pdf" target="_blank" rel="noopener">политикой обработки персональных данных</a></span>
-          </label>
-          <small class="form__error form__error--checkbox"></small>
-          <button class="btn btn--primary form__submit" type="submit">Отправить заявку</button>
-          <p class="form__success" role="status" aria-live="polite" hidden>Спасибо! Мы отправили подтверждение на ваш email. До встречи на конференции.</p>
-          <!-- TODO: подключить обработчик формы к CRM или backend-эндпоинту. -->
         </form>
       </div>
     </section>
