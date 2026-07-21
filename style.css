@@ -806,7 +806,7 @@ h1, h2, h3 {
   max-width: 880px;
   margin: 0;
   color: rgba(255, 255, 255, 0.88);
-  font-size: clamp(18px, 1.7vw, 21px);
+  font-size: 15px;
   font-weight: 600;
   line-height: 1.4;
 }
