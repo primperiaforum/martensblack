@@ -1,4 +1,5 @@
-:root {
+<style>
+:is(#tilda-custom-site, .tilda-custom-site) {
   --bg-deep:      #09090c;
   --bg-primary:   #0f1014;
   --bg-section:   #111318;
@@ -26,10 +27,10 @@
   --font-body:    "PT Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 }
 
-* { box-sizing: border-box; }
+:is(#tilda-custom-site, .tilda-custom-site), :is(#tilda-custom-site, .tilda-custom-site) * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
-body {
+:is(#tilda-custom-site, .tilda-custom-site) {
   margin: 0;
   background: var(--bg-primary);
   color: var(--text-main);
@@ -38,29 +39,29 @@ body {
 }
 
 body.nav-open { overflow: hidden; }
-img { display: block; max-width: 100%; }
-a { color: inherit; }
-button, input { font: inherit; }
-button { cursor: pointer; }
+:is(#tilda-custom-site, .tilda-custom-site) img { display: block; max-width: 100%; }
+:is(#tilda-custom-site, .tilda-custom-site) a { color: inherit; }
+:is(#tilda-custom-site, .tilda-custom-site) button, :is(#tilda-custom-site, .tilda-custom-site) input { font: inherit; }
+:is(#tilda-custom-site, .tilda-custom-site) button { cursor: pointer; }
 
-:focus-visible {
+:is(#tilda-custom-site, .tilda-custom-site) :focus-visible {
   outline: 3px solid rgba(249, 115, 22, 0.55);
   outline-offset: 3px;
 }
 
-h1, h2, h3 {
+:is(#tilda-custom-site, .tilda-custom-site) h1, :is(#tilda-custom-site, .tilda-custom-site) h2, :is(#tilda-custom-site, .tilda-custom-site) h3 {
   font-family: var(--font-display);
   font-weight: 800;
 }
 
-.container {
+:is(#tilda-custom-site, .tilda-custom-site) .container {
   width: min(100% - 32px, var(--container));
   margin-inline: auto;
 }
 
 /* ── HEADER ── */
 
-.site-header {
+:is(#tilda-custom-site, .tilda-custom-site) .site-header {
   position: sticky;
   top: 0;
   z-index: 50;
@@ -76,46 +77,46 @@ h1, h2, h3 {
   backdrop-filter: blur(22px);
 }
 
-.brand {
+:is(#tilda-custom-site, .tilda-custom-site) .brand {
   display: inline-flex;
   align-items: center;
   gap: 12px;
   text-decoration: none;
 }
 
-.brand__logo {
+:is(#tilda-custom-site, .tilda-custom-site) .brand__logo {
   width: 70px;
   height: 70px;
   max-height: 70px;
   object-fit: contain;
 }
 
-.brand__text {
+:is(#tilda-custom-site, .tilda-custom-site) .brand__text {
   display: grid;
   gap: 1px;
 }
 
-.brand__text strong {
+:is(#tilda-custom-site, .tilda-custom-site) .brand__text strong {
   font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.02em;
 }
 
-.brand__text small {
+:is(#tilda-custom-site, .tilda-custom-site) .brand__text small {
   color: rgba(255, 255, 255, 0.45);
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.06em;
 }
 
-.brand__text .brand__date {
+:is(#tilda-custom-site, .tilda-custom-site) .brand__text .brand__date {
   color: #ffffff;
   font-size: 14px;
   font-weight: 800;
   letter-spacing: 0.04em;
 }
 
-.site-nav {
+:is(#tilda-custom-site, .tilda-custom-site) .site-nav {
   display: flex;
   justify-content: center;
   gap: clamp(14px, 2vw, 28px);
@@ -124,15 +125,15 @@ h1, h2, h3 {
   letter-spacing: 0.01em;
 }
 
-.site-nav a,
-.header-cta {
+:is(#tilda-custom-site, .tilda-custom-site) .site-nav a,
+:is(#tilda-custom-site, .tilda-custom-site) .header-cta {
   text-decoration: none;
   transition: color 0.18s ease, background 0.18s ease, border-color 0.18s ease;
 }
 
-.site-nav a:hover { color: #ffffff; }
+:is(#tilda-custom-site, .tilda-custom-site) .site-nav a:hover { color: #ffffff; }
 
-.header-cta {
+:is(#tilda-custom-site, .tilda-custom-site) .header-cta {
   min-width: 136px;
   padding: 10px 20px;
   border: 1px solid var(--accent-str);
@@ -145,12 +146,12 @@ h1, h2, h3 {
   box-shadow: 0 8px 28px rgba(249, 115, 22, 0.28);
 }
 
-.header-cta:hover {
+:is(#tilda-custom-site, .tilda-custom-site) .header-cta:hover {
   background: #ff8c38;
   border-color: #ff8c38;
 }
 
-.nav-toggle {
+:is(#tilda-custom-site, .tilda-custom-site) .nav-toggle {
   display: none;
   width: 44px;
   height: 44px;
@@ -159,7 +160,7 @@ h1, h2, h3 {
   background: rgba(255, 255, 255, 0.05);
 }
 
-.nav-toggle span {
+:is(#tilda-custom-site, .tilda-custom-site) .nav-toggle span {
   display: block;
   width: 20px;
   height: 2px;
@@ -170,7 +171,7 @@ h1, h2, h3 {
 
 /* ── HERO ── */
 
-.hero {
+:is(#tilda-custom-site, .tilda-custom-site) .hero {
   position: relative;
   min-height: calc(100svh - 72px);
   display: grid;
@@ -180,17 +181,17 @@ h1, h2, h3 {
   color: #ffffff;
 }
 
-.hero__media,
-.hero__overlay {
+:is(#tilda-custom-site, .tilda-custom-site) .hero__media,
+:is(#tilda-custom-site, .tilda-custom-site) .hero__overlay {
   position: absolute;
   inset: 0;
 }
 
-.hero__media {
+:is(#tilda-custom-site, .tilda-custom-site) .hero__media {
   z-index: 0;
 }
 
-.hero__video {
+:is(#tilda-custom-site, .tilda-custom-site) .hero__video {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -200,13 +201,13 @@ h1, h2, h3 {
   display: block;
 }
 
-.hero__overlay {
+:is(#tilda-custom-site, .tilda-custom-site) .hero__overlay {
   z-index: 1;
   opacity: 0.70;
   background: #000000;
 }
 
-.hero__content {
+:is(#tilda-custom-site, .tilda-custom-site) .hero__content {
   position: relative;
   z-index: 2;
   width: min(100% - 32px, var(--container));
@@ -215,7 +216,7 @@ h1, h2, h3 {
   padding: 116px 0 38px;
 }
 
-.eyebrow {
+:is(#tilda-custom-site, .tilda-custom-site) .eyebrow {
   margin: 0 0 14px;
   color: var(--accent-str);
   font-family: var(--font-mono);
@@ -226,7 +227,7 @@ h1, h2, h3 {
   text-transform: none;
 }
 
-.hero .eyebrow {
+:is(#tilda-custom-site, .tilda-custom-site) .hero .eyebrow {
   max-width: none;
   margin-bottom: 18px;
   font-family: var(--font-display);
@@ -235,7 +236,7 @@ h1, h2, h3 {
   line-height: 1.08;
 }
 
-.hero h1 {
+:is(#tilda-custom-site, .tilda-custom-site) .hero h1 {
   max-width: none;
   margin: 0;
   font-size: clamp(42px, 5vw, 54px);
@@ -244,7 +245,7 @@ h1, h2, h3 {
   letter-spacing: 0;
 }
 
-.hero__lead {
+:is(#tilda-custom-site, .tilda-custom-site) .hero__lead {
   max-width: 980px;
   margin: 28px 0 0;
   color: rgba(255, 255, 255, 0.72);
@@ -252,15 +253,15 @@ h1, h2, h3 {
   line-height: 1.28;
 }
 
-.hero__meta {
+:is(#tilda-custom-site, .tilda-custom-site) .hero__meta {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin: 30px 0 0;
 }
 
-.hero__meta span,
-.hero__meta a {
+:is(#tilda-custom-site, .tilda-custom-site) .hero__meta span,
+:is(#tilda-custom-site, .tilda-custom-site) .hero__meta a {
   display: inline-flex;
   align-items: center;
   min-height: 38px;
@@ -274,12 +275,12 @@ h1, h2, h3 {
   text-decoration: none;
 }
 
-.hero__meta a:hover {
+:is(#tilda-custom-site, .tilda-custom-site) .hero__meta a:hover {
   background: var(--accent-dim);
   border-color: rgba(249, 115, 22, 0.30);
 }
 
-.hero__actions {
+:is(#tilda-custom-site, .tilda-custom-site) .hero__actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -289,7 +290,7 @@ h1, h2, h3 {
 
 /* ── BUTTONS ── */
 
-.btn {
+:is(#tilda-custom-site, .tilda-custom-site) .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -303,41 +304,41 @@ h1, h2, h3 {
   transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
 
-.btn:hover { transform: translateY(-2px); }
+:is(#tilda-custom-site, .tilda-custom-site) .btn:hover { transform: translateY(-2px); }
 
-.btn--primary {
+:is(#tilda-custom-site, .tilda-custom-site) .btn--primary {
   background: var(--accent-str);
   color: #ffffff;
   box-shadow: 0 16px 40px rgba(249, 115, 22, 0.28);
 }
 
-.btn--primary:hover {
+:is(#tilda-custom-site, .tilda-custom-site) .btn--primary:hover {
   background: #ff8c38;
   box-shadow: 0 20px 48px rgba(249, 115, 22, 0.38);
 }
 
-.btn--secondary {
+:is(#tilda-custom-site, .tilda-custom-site) .btn--secondary {
   border: 1px solid var(--border-med);
   background: rgba(255, 255, 255, 0.05);
   color: var(--text-main);
 }
 
-.btn--secondary:hover {
+:is(#tilda-custom-site, .tilda-custom-site) .btn--secondary:hover {
   background: rgba(255, 255, 255, 0.09);
 }
 
-.hero__link {
+:is(#tilda-custom-site, .tilda-custom-site) .hero__link {
   color: rgba(255, 255, 255, 0.60);
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
 }
 
-.hero__link:hover { color: #ffffff; }
+:is(#tilda-custom-site, .tilda-custom-site) .hero__link:hover { color: #ffffff; }
 
 /* ── HERO STATS ── */
 
-.hero__stats {
+:is(#tilda-custom-site, .tilda-custom-site) .hero__stats {
   position: relative;
   z-index: 2;
   display: grid;
@@ -346,7 +347,7 @@ h1, h2, h3 {
   padding-bottom: 22px;
 }
 
-.hero__stats article {
+:is(#tilda-custom-site, .tilda-custom-site) .hero__stats article {
   min-height: 120px;
   padding: 22px 24px;
   border: 1px solid var(--border);
@@ -354,7 +355,7 @@ h1, h2, h3 {
   backdrop-filter: blur(14px);
 }
 
-.hero__stats strong {
+:is(#tilda-custom-site, .tilda-custom-site) .hero__stats strong {
   display: block;
   margin-bottom: 8px;
   color: var(--accent-str);
@@ -364,35 +365,35 @@ h1, h2, h3 {
   line-height: 1;
 }
 
-.hero__stats span {
+:is(#tilda-custom-site, .tilda-custom-site) .hero__stats span {
   color: rgba(255, 255, 255, 0.55);
   font-size: 13px;
 }
 
 /* ── SECTIONS ── */
 
-.section {
+:is(#tilda-custom-site, .tilda-custom-site) .section {
   padding: var(--space-xl) 0;
   background: var(--bg-primary);
   color: var(--text-main);
 }
 
-.section--light {
+:is(#tilda-custom-site, .tilda-custom-site) .section--light {
   background: var(--bg-section);
 }
 
-.section--dark {
+:is(#tilda-custom-site, .tilda-custom-site) .section--dark {
   background: var(--bg-deep);
 }
 
-.section__head {
+:is(#tilda-custom-site, .tilda-custom-site) .section__head {
   max-width: 780px;
   margin-bottom: 38px;
 }
 
-.section__head--wide { max-width: 920px; }
+:is(#tilda-custom-site, .tilda-custom-site) .section__head--wide { max-width: 920px; }
 
-.section h2 {
+:is(#tilda-custom-site, .tilda-custom-site) .section h2 {
   margin: 0;
   color: #ffffff;
   font-size: clamp(26px, 3.6vw, 50px);
@@ -401,26 +402,25 @@ h1, h2, h3 {
   letter-spacing: -0.02em;
 }
 
-.section__head p:not(.eyebrow),
-.lead-copy,
-.expo p,
-.registration__copy p,
-.speaker-contact p {
+:is(#tilda-custom-site, .tilda-custom-site) .section__head p:not(.eyebrow),
+:is(#tilda-custom-site, .tilda-custom-site) .lead-copy,
+:is(#tilda-custom-site, .tilda-custom-site) .expo p,
+:is(#tilda-custom-site, .tilda-custom-site) .speaker-contact p {
   color: var(--text-muted);
   font-size: 17px;
   line-height: 1.65;
 }
 
-.split {
+:is(#tilda-custom-site, .tilda-custom-site) .split {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(320px, 0.72fr);
   gap: var(--space-lg);
   align-items: start;
 }
 
-.lead-copy p:first-child { margin-top: 0; }
+:is(#tilda-custom-site, .tilda-custom-site) .lead-copy p:first-child { margin-top: 0; }
 
-.market-visual {
+:is(#tilda-custom-site, .tilda-custom-site) .market-visual {
   position: relative;
   min-height: 260px;
   margin-top: 44px;
@@ -432,7 +432,7 @@ h1, h2, h3 {
     var(--bg-card);
 }
 
-.market-visual::before {
+:is(#tilda-custom-site, .tilda-custom-site) .market-visual::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -444,7 +444,7 @@ h1, h2, h3 {
   opacity: 0.62;
 }
 
-.market-visual canvas {
+:is(#tilda-custom-site, .tilda-custom-site) .market-visual canvas {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -453,13 +453,13 @@ h1, h2, h3 {
 
 /* ── BENEFIT CARDS ── */
 
-.benefits-grid {
+:is(#tilda-custom-site, .tilda-custom-site) .benefits-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
 }
 
-.benefit-card {
+:is(#tilda-custom-site, .tilda-custom-site) .benefit-card {
   position: relative;
   min-height: 280px;
   padding: 24px;
@@ -470,9 +470,9 @@ h1, h2, h3 {
   transition: border-color 0.2s ease;
 }
 
-.benefit-card:hover { border-color: var(--border-med); }
+:is(#tilda-custom-site, .tilda-custom-site) .benefit-card:hover { border-color: var(--border-med); }
 
-.benefit-card::before {
+:is(#tilda-custom-site, .tilda-custom-site) .benefit-card::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
@@ -480,7 +480,7 @@ h1, h2, h3 {
   background: var(--accent-str);
 }
 
-.benefit-card__icon {
+:is(#tilda-custom-site, .tilda-custom-site) .benefit-card__icon {
   display: inline-grid;
   place-items: center;
   width: 54px;
@@ -495,7 +495,7 @@ h1, h2, h3 {
   border: 1px solid rgba(249, 115, 22, 0.18);
 }
 
-.benefit-card h3 {
+:is(#tilda-custom-site, .tilda-custom-site) .benefit-card h3 {
   margin: 0 0 12px;
   color: #ffffff;
   font-size: 19px;
@@ -503,7 +503,7 @@ h1, h2, h3 {
   letter-spacing: -0.01em;
 }
 
-.benefit-card p {
+:is(#tilda-custom-site, .tilda-custom-site) .benefit-card p {
   margin: 0;
   color: var(--text-muted);
   font-size: 15px;
@@ -511,13 +511,13 @@ h1, h2, h3 {
 
 /* ── AUDIENCE TAGS ── */
 
-.audience-tags {
+:is(#tilda-custom-site, .tilda-custom-site) .audience-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 
-.audience-tags span {
+:is(#tilda-custom-site, .tilda-custom-site) .audience-tags span {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
@@ -531,14 +531,14 @@ h1, h2, h3 {
   transition: border-color 0.18s ease, background 0.18s ease;
 }
 
-.audience-tags span:hover {
+:is(#tilda-custom-site, .tilda-custom-site) .audience-tags span:hover {
   border-color: rgba(249, 115, 22, 0.35);
   background: var(--accent-dim);
 }
 
 /* ── VALUE CHAIN ── */
 
-.value-chain {
+:is(#tilda-custom-site, .tilda-custom-site) .value-chain {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 1px;
@@ -548,7 +548,7 @@ h1, h2, h3 {
   background: var(--border);
 }
 
-.value-chain article {
+:is(#tilda-custom-site, .tilda-custom-site) .value-chain article {
   min-height: 260px;
   padding: 22px;
   background: var(--bg-card);
@@ -556,9 +556,9 @@ h1, h2, h3 {
   transition: background 0.18s ease;
 }
 
-.value-chain article:hover { background: var(--bg-card-alt); }
+:is(#tilda-custom-site, .tilda-custom-site) .value-chain article:hover { background: var(--bg-card-alt); }
 
-.value-chain span {
+:is(#tilda-custom-site, .tilda-custom-site) .value-chain span {
   color: var(--accent-str);
   font-family: var(--font-mono);
   font-size: 20px;
@@ -566,7 +566,7 @@ h1, h2, h3 {
   letter-spacing: 0.08em;
 }
 
-.value-chain h3 {
+:is(#tilda-custom-site, .tilda-custom-site) .value-chain h3 {
   margin: 40px 0 10px;
   color: #ffffff;
   font-size: 20px;
@@ -574,7 +574,7 @@ h1, h2, h3 {
   letter-spacing: -0.01em;
 }
 
-.value-chain p {
+:is(#tilda-custom-site, .tilda-custom-site) .value-chain p {
   margin: 0;
   color: var(--text-muted);
   font-size: 14px;
@@ -582,14 +582,14 @@ h1, h2, h3 {
 
 /* ── PROGRAM ── */
 
-.program-tabs {
+:is(#tilda-custom-site, .tilda-custom-site) .program-tabs {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   margin-bottom: 20px;
 }
 
-.program-tab {
+:is(#tilda-custom-site, .tilda-custom-site) .program-tab {
   min-height: 52px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -600,32 +600,32 @@ h1, h2, h3 {
   transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
 }
 
-.program-tab:hover {
+:is(#tilda-custom-site, .tilda-custom-site) .program-tab:hover {
   border-color: var(--border-med);
   color: var(--text-main);
 }
 
-.program-tab.is-active {
+:is(#tilda-custom-site, .tilda-custom-site) .program-tab.is-active {
   border-color: var(--accent-str);
   background: var(--accent-str);
   color: #ffffff;
 }
 
-.program-panel {
+:is(#tilda-custom-site, .tilda-custom-site) .program-panel {
   scroll-margin-top: 96px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--bg-card);
 }
 
-.program-panel + .program-panel { margin-top: 16px; }
+:is(#tilda-custom-site, .tilda-custom-site) .program-panel + .program-panel { margin-top: 16px; }
 
-.program-section #program-title,
-.organizers #organizers-title {
+:is(#tilda-custom-site, .tilda-custom-site) .program-section #program-title,
+:is(#tilda-custom-site, .tilda-custom-site) .organizers #organizers-title {
   font-size: 34px;
 }
 
-.program-note {
+:is(#tilda-custom-site, .tilda-custom-site) .program-note {
   color: var(--text-dim);
   font-family: var(--font-mono);
   font-size: 11px;
@@ -634,19 +634,19 @@ h1, h2, h3 {
 
 /* ── SESSION ── */
 
-.session {
+:is(#tilda-custom-site, .tilda-custom-site) .session {
   display: grid;
   grid-template-columns: 220px 1fr;
 }
 
-.session__time {
+:is(#tilda-custom-site, .tilda-custom-site) .session__time {
   padding: 32px 24px;
   border-right: 1px solid var(--border);
   background: var(--bg-card-alt);
   border-radius: var(--radius) 0 0 var(--radius);
 }
 
-.session__time span {
+:is(#tilda-custom-site, .tilda-custom-site) .session__time span {
   display: block;
   color: #ffffff;
   font-size: 20px;
@@ -655,7 +655,7 @@ h1, h2, h3 {
   letter-spacing: -0.01em;
 }
 
-.session__time small {
+:is(#tilda-custom-site, .tilda-custom-site) .session__time small {
   display: block;
   margin-top: 8px;
   color: var(--text-dim);
@@ -664,12 +664,12 @@ h1, h2, h3 {
   letter-spacing: 0.06em;
 }
 
-.session__body {
+:is(#tilda-custom-site, .tilda-custom-site) .session__body {
   min-width: 0;
   padding: 32px;
 }
 
-.session__format {
+:is(#tilda-custom-site, .tilda-custom-site) .session__format {
   margin: 0 0 10px;
   color: var(--accent-str);
   font-family: var(--font-mono);
@@ -680,7 +680,7 @@ h1, h2, h3 {
   text-transform: uppercase;
 }
 
-.session h3 {
+:is(#tilda-custom-site, .tilda-custom-site) .session h3 {
   margin: 0;
   max-width: 860px;
   color: #ffffff;
@@ -690,11 +690,11 @@ h1, h2, h3 {
   letter-spacing: -0.01em;
 }
 
-.session h3 + p {
+:is(#tilda-custom-site, .tilda-custom-site) .session h3 + p {
   margin-top: 10px;
 }
 
-.session__body > p:not(.session__format) {
+:is(#tilda-custom-site, .tilda-custom-site) .session__body > p:not(.session__format) {
   max-width: 880px;
   color: var(--text-muted);
   font-size: 16px;
@@ -702,7 +702,7 @@ h1, h2, h3 {
 
 /* ── ACCORDION ── */
 
-.accordion-trigger {
+:is(#tilda-custom-site, .tilda-custom-site) .accordion-trigger {
   width: 100%;
   min-height: 64px;
   margin: 20px 0 0;
@@ -723,7 +723,7 @@ h1, h2, h3 {
   transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
 }
 
-.accordion-trigger:hover {
+:is(#tilda-custom-site, .tilda-custom-site) .accordion-trigger:hover {
   border-color: var(--accent-str);
   background:
     linear-gradient(90deg, rgba(249, 115, 22, 0.20), rgba(255, 255, 255, 0.06)),
@@ -732,7 +732,7 @@ h1, h2, h3 {
   transform: translateY(-1px);
 }
 
-.accordion-trigger::after {
+:is(#tilda-custom-site, .tilda-custom-site) .accordion-trigger::after {
   content: "+";
   display: grid;
   flex: 0 0 40px;
@@ -749,33 +749,33 @@ h1, h2, h3 {
   transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
 }
 
-.accordion-trigger:hover::after {
+:is(#tilda-custom-site, .tilda-custom-site) .accordion-trigger:hover::after {
   background: var(--accent-str);
   color: #ffffff;
   transform: scale(1.08);
 }
 
-.accordion-trigger[aria-expanded="true"]::after {
+:is(#tilda-custom-site, .tilda-custom-site) .accordion-trigger[aria-expanded="true"]::after {
   content: "−";
   padding-bottom: 3px;
 }
 
-.accordion-content {
+:is(#tilda-custom-site, .tilda-custom-site) .accordion-content {
   display: grid;
   grid-template-rows: 0fr;
   transition: grid-template-rows 0.24s ease;
 }
 
-.accordion-content.is-open { grid-template-rows: 1fr; }
+:is(#tilda-custom-site, .tilda-custom-site) .accordion-content.is-open { grid-template-rows: 1fr; }
 
-.accordion-content ul {
+:is(#tilda-custom-site, .tilda-custom-site) .accordion-content ul {
   min-height: 0;
   margin: 0;
   padding: 0 0 0 22px;
   overflow: hidden;
 }
 
-.accordion-content li {
+:is(#tilda-custom-site, .tilda-custom-site) .accordion-content li {
   margin-top: 12px;
   color: var(--text-muted);
   font-size: 15px;
@@ -783,7 +783,7 @@ h1, h2, h3 {
 
 /* ── INVITED SPEAKERS ── */
 
-.invited-speakers {
+:is(#tilda-custom-site, .tilda-custom-site) .invited-speakers {
   margin-top: 26px;
   padding: 22px 24px;
   border: 1px solid rgba(249, 115, 22, 0.24);
@@ -793,7 +793,7 @@ h1, h2, h3 {
     var(--bg-card-alt);
 }
 
-.invited-speakers strong {
+:is(#tilda-custom-site, .tilda-custom-site) .invited-speakers strong {
   display: block;
   margin-bottom: 8px;
   color: #ffffff;
@@ -802,7 +802,7 @@ h1, h2, h3 {
   line-height: 1.2;
 }
 
-.invited-speakers p {
+:is(#tilda-custom-site, .tilda-custom-site) .invited-speakers p {
   max-width: 880px;
   margin: 0;
   color: #ffffff;
@@ -813,18 +813,18 @@ h1, h2, h3 {
 
 /* ── SPEAKER CARDS ── */
 
-.speaker-grid {
+:is(#tilda-custom-site, .tilda-custom-site) .speaker-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
 }
 
-.speaker-grid.compact {
+:is(#tilda-custom-site, .tilda-custom-site) .speaker-grid.compact {
   grid-template-columns: repeat(6, 1fr);
   margin-top: 28px;
 }
 
-.speaker-card {
+:is(#tilda-custom-site, .tilda-custom-site) .speaker-card {
   min-width: 0;
   padding: 18px;
   border: 1px solid var(--border);
@@ -833,22 +833,22 @@ h1, h2, h3 {
   transition: border-color 0.18s ease;
 }
 
-.speaker-card:hover { border-color: var(--border-med); }
+:is(#tilda-custom-site, .tilda-custom-site) .speaker-card:hover { border-color: var(--border-med); }
 
-.speaker-card img {
+:is(#tilda-custom-site, .tilda-custom-site) .speaker-card img {
   width: 74px;
   height: 74px;
   border-radius: 50%;
   object-fit: cover;
 }
 
-.speaker-card--large img {
+:is(#tilda-custom-site, .tilda-custom-site) .speaker-card--large img {
   width: 104px;
   height: 104px;
 }
 
-.speaker-card h3,
-.speaker-card h4 {
+:is(#tilda-custom-site, .tilda-custom-site) .speaker-card h3,
+:is(#tilda-custom-site, .tilda-custom-site) .speaker-card h4 {
   margin: 14px 0 5px;
   color: #ffffff;
   font-size: 14px;
@@ -856,35 +856,35 @@ h1, h2, h3 {
   line-height: 1.3;
 }
 
-.speaker-card p {
+:is(#tilda-custom-site, .tilda-custom-site) .speaker-card p {
   margin: 0;
   color: var(--text-muted);
   font-size: 12px;
 }
 
-.speaker-card--representative h4 { font-size: 13px; }
+:is(#tilda-custom-site, .tilda-custom-site) .speaker-card--representative h4 { font-size: 13px; }
 
 /* ── EXPO ── */
 
-.expo {
+:is(#tilda-custom-site, .tilda-custom-site) .expo {
   background: var(--bg-deep);
   color: var(--text-main);
 }
 
-.expo__grid {
+:is(#tilda-custom-site, .tilda-custom-site) .expo__grid {
   display: grid;
   grid-template-columns: 220px minmax(0, 1fr) minmax(280px, 0.85fr);
   gap: 28px;
   align-items: center;
 }
 
-.expo__brand-wrap {
+:is(#tilda-custom-site, .tilda-custom-site) .expo__brand-wrap {
   display: grid;
   gap: 14px;
   align-self: stretch;
 }
 
-.expo__brand {
+:is(#tilda-custom-site, .tilda-custom-site) .expo__brand {
   display: grid;
   place-items: center;
   min-height: 180px;
@@ -894,13 +894,13 @@ h1, h2, h3 {
   background: var(--bg-card);
 }
 
-.expo__brand img {
+:is(#tilda-custom-site, .tilda-custom-site) .expo__brand img {
   width: 200px;
   max-height: 130px;
   object-fit: contain;
 }
 
-.expo h2 {
+:is(#tilda-custom-site, .tilda-custom-site) .expo h2 {
   margin: 0;
   color: var(--accent-str);
   font-size: 26px;
@@ -908,23 +908,23 @@ h1, h2, h3 {
   text-align: left;
 }
 
-.expo p {
+:is(#tilda-custom-site, .tilda-custom-site) .expo p {
   color: var(--text-muted);
   font-size: 15px;
 }
 
-.expo p strong {
+:is(#tilda-custom-site, .tilda-custom-site) .expo p strong {
   color: var(--text-main);
   font-weight: 800;
 }
 
-.route-list {
+:is(#tilda-custom-site, .tilda-custom-site) .route-list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 8px;
 }
 
-.route-list span {
+:is(#tilda-custom-site, .tilda-custom-site) .route-list span {
   display: flex;
   align-items: center;
   min-height: 54px;
@@ -939,15 +939,15 @@ h1, h2, h3 {
 
 /* ── HISTORY ── */
 
-.history { background: var(--bg-primary); }
+:is(#tilda-custom-site, .tilda-custom-site) .history { background: var(--bg-primary); }
 
-.history-grid {
+:is(#tilda-custom-site, .tilda-custom-site) .history-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
 }
 
-.history-card {
+:is(#tilda-custom-site, .tilda-custom-site) .history-card {
   position: relative;
   display: grid;
   place-items: center;
@@ -965,9 +965,9 @@ h1, h2, h3 {
   transition: border-color 0.22s ease;
 }
 
-.history-card:hover { border-color: rgba(249, 115, 22, 0.28); }
+:is(#tilda-custom-site, .tilda-custom-site) .history-card:hover { border-color: rgba(249, 115, 22, 0.28); }
 
-.history-card::before {
+:is(#tilda-custom-site, .tilda-custom-site) .history-card::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -976,15 +976,15 @@ h1, h2, h3 {
   transition: transform 0.28s ease, opacity 0.28s ease;
 }
 
-.history-card span,
-.history-card p {
+:is(#tilda-custom-site, .tilda-custom-site) .history-card span,
+:is(#tilda-custom-site, .tilda-custom-site) .history-card p {
   position: relative;
   z-index: 1;
   margin: 0;
   transition: transform 0.22s ease;
 }
 
-.history-card span {
+:is(#tilda-custom-site, .tilda-custom-site) .history-card span {
   font-family: var(--font-display);
   font-size: clamp(30px, 4vw, 48px);
   font-weight: 800;
@@ -992,24 +992,24 @@ h1, h2, h3 {
   letter-spacing: -0.02em;
 }
 
-.history-card p { display: none; }
+:is(#tilda-custom-site, .tilda-custom-site) .history-card p { display: none; }
 
-.history-card:hover::before {
+:is(#tilda-custom-site, .tilda-custom-site) .history-card:hover::before {
   transform: scale(1.18);
   opacity: 1;
 }
 
-.history-card:hover span { transform: scale(1.10); }
+:is(#tilda-custom-site, .tilda-custom-site) .history-card:hover span { transform: scale(1.10); }
 
 /* ── GALLERY ── */
 
-.gallery-grid {
+:is(#tilda-custom-site, .tilda-custom-site) .gallery-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 14px;
 }
 
-.gallery-card {
+:is(#tilda-custom-site, .tilda-custom-site) .gallery-card {
   position: relative;
   overflow: hidden;
   padding: 0;
@@ -1019,20 +1019,20 @@ h1, h2, h3 {
   transition: border-color 0.18s ease;
 }
 
-.gallery-card:hover { border-color: var(--border-med); }
+:is(#tilda-custom-site, .tilda-custom-site) .gallery-card:hover { border-color: var(--border-med); }
 
-.gallery-card img {
+:is(#tilda-custom-site, .tilda-custom-site) .gallery-card img {
   width: 100%;
   aspect-ratio: 1.55;
   object-fit: cover;
   transition: transform 0.28s ease;
 }
 
-.gallery-card:hover img {
+:is(#tilda-custom-site, .tilda-custom-site) .gallery-card:hover img {
   transform: scale(1.04);
 }
 
-.gallery-card::after {
+:is(#tilda-custom-site, .tilda-custom-site) .gallery-card::after {
   content: "";
   position: absolute;
   inset: auto 0 0;
@@ -1041,7 +1041,7 @@ h1, h2, h3 {
   pointer-events: none;
 }
 
-.gallery-card span {
+:is(#tilda-custom-site, .tilda-custom-site) .gallery-card span {
   position: absolute;
   left: 18px;
   right: 18px;
@@ -1053,230 +1053,18 @@ h1, h2, h3 {
   line-height: 1.18;
 }
 
-/* ── REGISTRATION ── */
-
-.registration {
-  background: var(--bg-deep);
-  color: var(--text-main);
-  position: relative;
-}
-
-.registration::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 50%;
-  height: 100%;
-  background: radial-gradient(ellipse at 80% 50%, rgba(249, 115, 22, 0.07), transparent 60%);
-  pointer-events: none;
-}
-
-.registration__grid {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 0.78fr) minmax(360px, 0.7fr);
-  gap: var(--space-lg);
-  align-items: start;
-}
-
-.registration__copy h2 {
-  margin: 0;
-  color: #ffffff;
-  font-size: clamp(34px, 5vw, 62px);
-  line-height: 0.95;
-  letter-spacing: 0;
-}
-
-.registration__copy p { color: var(--text-muted); }
-
-.registration__note {
-  display: grid;
-  gap: 6px;
-  margin-top: 28px;
-  padding: 20px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--bg-card);
-}
-
-.registration__note strong {
-  color: #ffffff;
-  font-size: 20px;
-}
-
-.registration__note span { color: var(--text-muted); }
-
-/* ── FORM ── */
-
-.form {
-  display: grid;
-  gap: 14px;
-  padding: 24px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--bg-card);
-  box-shadow: var(--shadow);
-}
-
-.form__step {
-  display: none;
-  gap: 14px;
-}
-
-.form__step.is-active {
-  display: grid;
-}
-
-.form__row { display: grid; gap: 7px; }
-
-.form label {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
-.form .checkbox {
-  position: static;
-  width: auto;
-  height: auto;
-  overflow: visible;
-  clip: auto;
-  clip-path: none;
-  white-space: normal;
-  color: rgba(255, 255, 255, 0.65);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-
-.form input[type="text"],
-.form input[type="email"],
-.form input[type="tel"] {
-  width: 100%;
-  min-height: 48px;
-  padding: 10px 14px;
-  border: 1px solid var(--border-med);
-  border-radius: var(--radius);
-  background: var(--bg-primary);
-  color: var(--text-main);
-  transition: border-color 0.18s ease;
-}
-
-.form input::placeholder {
-  color: rgba(255, 255, 255, 0.48);
-  opacity: 1;
-}
-
-.form input[type="text"]:focus,
-.form input[type="email"]:focus,
-.form input[type="tel"]:focus {
-  border-color: rgba(249, 115, 22, 0.45);
-  outline: none;
-}
-
-.form input.is-invalid { border-color: #dc2626; }
-
-.form__error {
-  min-height: 18px;
-  color: #f87171;
-  font-size: 12px;
-  font-family: var(--font-mono);
-}
-
-.checkbox {
-  display: grid;
-  grid-template-columns: 22px 1fr;
-  gap: 12px;
-  align-items: start;
-  color: var(--text-muted);
-  font-size: 11px;
-  line-height: 1.45;
-}
-
-.checkbox input {
-  width: 18px;
-  height: 18px;
-  margin-top: 1px;
-  accent-color: var(--accent-str);
-}
-
-.checkbox a { color: var(--accent-str); }
-
-.form__next,
-.form__submit {
-  width: 100%;
-}
-
-.form__actions {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 12px;
-}
-
-.form__back {
-  border: 1px solid #656870;
-  background: transparent;
-  color: #656870;
-  box-shadow: none;
-}
-
-.form__back:hover {
-  background: rgba(101, 104, 112, 0.10);
-  box-shadow: none;
-}
-
-.form__success {
-  margin: 0;
-  display: grid;
-  justify-items: center;
-  gap: 12px;
-  padding: 28px 22px;
-  border-radius: var(--radius);
-  background: #ffffff;
-  border: 1px solid #ffffff;
-  color: #000000;
-  text-align: center;
-  font-weight: 800;
-  font-size: 18px;
-}
-
-.form__success[hidden] {
-  display: none;
-}
-
-.form__success span {
-  display: grid;
-  place-items: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: #16a34a;
-  color: #ffffff;
-  font-size: 30px;
-  line-height: 1;
-}
-
-.form__success p {
-  margin: 0;
-}
-
 /* ── SPEAKER CONTACT ── */
 
-.speaker-contact__inner {
+:is(#tilda-custom-site, .tilda-custom-site) .speaker-contact__inner {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 340px;
   gap: var(--space-lg);
   align-items: center;
 }
 
-.speaker-contact__inner h2 { color: #ffffff; }
+:is(#tilda-custom-site, .tilda-custom-site) .speaker-contact__inner h2 { color: #ffffff; }
 
-.speaker-contact .eyebrow {
+:is(#tilda-custom-site, .tilda-custom-site) .speaker-contact .eyebrow {
   color: var(--accent-str);
   font-family: var(--font-mono);
   font-size: 24px;
@@ -1287,9 +1075,9 @@ h1, h2, h3 {
 
 /* ── ORGANIZERS ── */
 
-.organizers-list { display: grid; gap: 16px; }
+:is(#tilda-custom-site, .tilda-custom-site) .organizers-list { display: grid; gap: 16px; }
 
-.organizer-card {
+:is(#tilda-custom-site, .tilda-custom-site) .organizer-card {
   display: grid;
   grid-template-columns: 240px minmax(0, 1fr);
   gap: 28px;
@@ -1301,9 +1089,9 @@ h1, h2, h3 {
   transition: border-color 0.18s ease;
 }
 
-.organizer-card:hover { border-color: var(--border-med); }
+:is(#tilda-custom-site, .tilda-custom-site) .organizer-card:hover { border-color: var(--border-med); }
 
-.organizer-card__logo {
+:is(#tilda-custom-site, .tilda-custom-site) .organizer-card__logo {
   display: grid;
   place-items: center;
   min-height: 140px;
@@ -1313,7 +1101,7 @@ h1, h2, h3 {
   background: var(--bg-card-alt);
 }
 
-.organizer-card__logo img {
+:is(#tilda-custom-site, .tilda-custom-site) .organizer-card__logo img {
   max-width: 190px;
   max-height: 92px;
   object-fit: contain;
@@ -1321,7 +1109,7 @@ h1, h2, h3 {
   opacity: 0.85;
 }
 
-.organizer-card h3 {
+:is(#tilda-custom-site, .tilda-custom-site) .organizer-card h3 {
   margin: 0 0 10px;
   color: #ffffff;
   font-size: 19px;
@@ -1329,7 +1117,7 @@ h1, h2, h3 {
   letter-spacing: -0.01em;
 }
 
-.organizer-card p {
+:is(#tilda-custom-site, .tilda-custom-site) .organizer-card p {
   margin: 0;
   color: var(--text-muted);
   font-size: 15px;
@@ -1337,7 +1125,7 @@ h1, h2, h3 {
 
 /* ── CONTACT CARD ── */
 
-.contact-card {
+:is(#tilda-custom-site, .tilda-custom-site) .contact-card {
   display: grid;
   gap: 12px;
   padding: 24px;
@@ -1346,19 +1134,19 @@ h1, h2, h3 {
   background: var(--bg-card);
 }
 
-.contact-card strong {
+:is(#tilda-custom-site, .tilda-custom-site) .contact-card strong {
   color: #ffffff;
   font-size: 14px;
   font-weight: 700;
 }
 
-.contact-card strong span {
+:is(#tilda-custom-site, .tilda-custom-site) .contact-card strong span {
   display: block;
   margin-top: 4px;
   color: var(--accent-str);
 }
 
-.contact-card a {
+:is(#tilda-custom-site, .tilda-custom-site) .contact-card a {
   color: var(--accent-str);
   text-decoration: none;
   font-weight: 700;
@@ -1366,24 +1154,24 @@ h1, h2, h3 {
 
 /* ── FOOTER ── */
 
-.footer {
+:is(#tilda-custom-site, .tilda-custom-site) .footer {
   padding: 15px 0;
   background: var(--bg-deep);
   border-top: 1px solid var(--border);
   color: var(--text-muted);
 }
 
-.footer__grid {
+:is(#tilda-custom-site, .tilda-custom-site) .footer__grid {
   display: grid;
   grid-template-columns: auto minmax(220px, 1fr) auto;
   gap: 24px;
   align-items: center;
 }
 
-.footer strong { color: #ffffff; }
-.footer p { margin: 8px 0 0; }
+:is(#tilda-custom-site, .tilda-custom-site) .footer strong { color: #ffffff; }
+:is(#tilda-custom-site, .tilda-custom-site) .footer p { margin: 8px 0 0; }
 
-.footer__top {
+:is(#tilda-custom-site, .tilda-custom-site) .footer__top {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1400,7 +1188,7 @@ h1, h2, h3 {
   transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
 }
 
-.footer__top:hover {
+:is(#tilda-custom-site, .tilda-custom-site) .footer__top:hover {
   border-color: #ff8c38;
   background: #ff8c38;
   color: #ffffff;
@@ -1408,38 +1196,38 @@ h1, h2, h3 {
   transform: translateY(-1px);
 }
 
-.footer nav { display: grid; gap: 8px; }
+:is(#tilda-custom-site, .tilda-custom-site) .footer nav { display: grid; gap: 8px; }
 
-.footer a {
+:is(#tilda-custom-site, .tilda-custom-site) .footer a {
   color: var(--text-muted);
   font-size: 13px;
   text-decoration: none;
 }
 
-.footer a.footer__top {
+:is(#tilda-custom-site, .tilda-custom-site) .footer a.footer__top {
   color: #ffffff;
 }
 
-.footer a.footer__top:hover {
+:is(#tilda-custom-site, .tilda-custom-site) .footer a.footer__top:hover {
   color: #ffffff;
 }
 
-.footer a:hover { color: var(--text-main); }
+:is(#tilda-custom-site, .tilda-custom-site) .footer a:hover { color: var(--text-main); }
 
-.footer__logos {
+:is(#tilda-custom-site, .tilda-custom-site) .footer__logos {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 20px;
 }
 
-.footer__apm {
+:is(#tilda-custom-site, .tilda-custom-site) .footer__apm {
   width: 240px;
   max-height: 90px;
   object-fit: contain;
 }
 
-.footer__imperia {
+:is(#tilda-custom-site, .tilda-custom-site) .footer__imperia {
   width: 240px;
   max-height: 90px;
   object-fit: contain;
@@ -1449,11 +1237,11 @@ h1, h2, h3 {
 
 /* ── MOBILE CTA ── */
 
-.mobile-cta { display: none; }
+:is(#tilda-custom-site, .tilda-custom-site) .mobile-cta { display: none; }
 
 /* ── LIGHTBOX ── */
 
-.lightbox {
+:is(#tilda-custom-site, .tilda-custom-site) .lightbox {
   position: fixed;
   inset: 0;
   z-index: 100;
@@ -1463,16 +1251,16 @@ h1, h2, h3 {
   background: rgba(5, 5, 7, 0.94);
 }
 
-.lightbox[hidden] { display: none; }
+:is(#tilda-custom-site, .tilda-custom-site) .lightbox[hidden] { display: none; }
 
-.lightbox img {
+:is(#tilda-custom-site, .tilda-custom-site) .lightbox img {
   max-height: min(760px, 82vh);
   border-radius: var(--radius);
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
 }
 
-.lightbox__close,
-.lightbox__nav {
+:is(#tilda-custom-site, .tilda-custom-site) .lightbox__close,
+:is(#tilda-custom-site, .tilda-custom-site) .lightbox__nav {
   position: absolute;
   border: 1px solid var(--border-med);
   border-radius: 999px;
@@ -1481,28 +1269,28 @@ h1, h2, h3 {
   transition: background 0.18s ease;
 }
 
-.lightbox__close:hover,
-.lightbox__nav:hover { background: rgba(255, 255, 255, 0.14); }
+:is(#tilda-custom-site, .tilda-custom-site) .lightbox__close:hover,
+:is(#tilda-custom-site, .tilda-custom-site) .lightbox__nav:hover { background: rgba(255, 255, 255, 0.14); }
 
-.lightbox__close {
+:is(#tilda-custom-site, .tilda-custom-site) .lightbox__close {
   top: 18px; right: 18px;
   width: 46px; height: 46px;
   font-size: 32px; line-height: 1;
 }
 
-.lightbox__nav {
+:is(#tilda-custom-site, .tilda-custom-site) .lightbox__nav {
   top: 50%;
   width: 54px; height: 54px;
   font-size: 42px;
   transform: translateY(-50%);
 }
 
-.lightbox__nav--prev { left: 18px; }
-.lightbox__nav--next { right: 18px; }
+:is(#tilda-custom-site, .tilda-custom-site) .lightbox__nav--prev { left: 18px; }
+:is(#tilda-custom-site, .tilda-custom-site) .lightbox__nav--next { right: 18px; }
 
 /* ── COOKIE BANNER ── */
 
-.cookie-banner {
+:is(#tilda-custom-site, .tilda-custom-site) .cookie-banner {
   position: fixed;
   right: 20px; bottom: 20px;
   z-index: 110;
@@ -1520,11 +1308,11 @@ h1, h2, h3 {
   backdrop-filter: blur(20px);
 }
 
-.cookie-banner[hidden] { display: none; }
-.cookie-banner p { margin: 0; font-size: 13px; }
-.cookie-banner a { color: var(--text-main); text-decoration: underline; text-underline-offset: 3px; }
+:is(#tilda-custom-site, .tilda-custom-site) .cookie-banner[hidden] { display: none; }
+:is(#tilda-custom-site, .tilda-custom-site) .cookie-banner p { margin: 0; font-size: 13px; }
+:is(#tilda-custom-site, .tilda-custom-site) .cookie-banner a { color: var(--text-main); text-decoration: underline; text-underline-offset: 3px; }
 
-.cookie-banner__button {
+:is(#tilda-custom-site, .tilda-custom-site) .cookie-banner__button {
   min-height: 42px;
   padding: 10px 18px;
   border: 0;
@@ -1538,25 +1326,25 @@ h1, h2, h3 {
 /* ── RESPONSIVE ── */
 
 @media (max-width: 1100px) {
-  .benefits-grid { grid-template-columns: repeat(2, 1fr); }
-  .value-chain { grid-template-columns: repeat(3, 1fr); }
-  .history-grid { grid-template-columns: repeat(3, 1fr); }
-  .speaker-grid.compact { grid-template-columns: repeat(3, 1fr); }
+  :is(#tilda-custom-site, .tilda-custom-site) .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+  :is(#tilda-custom-site, .tilda-custom-site) .value-chain { grid-template-columns: repeat(3, 1fr); }
+  :is(#tilda-custom-site, .tilda-custom-site) .history-grid { grid-template-columns: repeat(3, 1fr); }
+  :is(#tilda-custom-site, .tilda-custom-site) .speaker-grid.compact { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 860px) {
-  .site-header { grid-template-columns: auto auto; }
-  .brand__logo {
+  :is(#tilda-custom-site, .tilda-custom-site) .site-header { grid-template-columns: auto auto; }
+  :is(#tilda-custom-site, .tilda-custom-site) .brand__logo {
     width: 70px;
     height: 70px;
   }
 
-  .nav-toggle {
+  :is(#tilda-custom-site, .tilda-custom-site) .nav-toggle {
     display: block;
     justify-self: end;
   }
 
-  .site-nav {
+  :is(#tilda-custom-site, .tilda-custom-site) .site-nav {
     position: fixed;
     inset: 72px 0 auto;
     display: grid;
@@ -1568,105 +1356,99 @@ h1, h2, h3 {
     transition: transform 0.24s ease;
   }
 
-  .site-nav.is-open { transform: translateY(0); }
+  :is(#tilda-custom-site, .tilda-custom-site) .site-nav.is-open { transform: translateY(0); }
 
-  .site-nav a {
+  :is(#tilda-custom-site, .tilda-custom-site) .site-nav a {
     padding: 15px 0;
     border-bottom: 1px solid var(--border);
   }
 
-  .header-cta { display: none; }
+  :is(#tilda-custom-site, .tilda-custom-site) .header-cta { display: none; }
 
-  .nav-toggle.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-  .nav-toggle.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  :is(#tilda-custom-site, .tilda-custom-site) .nav-toggle.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  :is(#tilda-custom-site, .tilda-custom-site) .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+  :is(#tilda-custom-site, .tilda-custom-site) .nav-toggle.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-  .hero__content { padding-top: 86px; }
-  .hero .eyebrow { font-size: 30px; }
-  .hero h1 { font-size: clamp(36px, 8vw, 48px); }
-  .hero__lead { font-size: clamp(22px, 5vw, 28px); }
+  :is(#tilda-custom-site, .tilda-custom-site) .hero__content { padding-top: 86px; }
+  :is(#tilda-custom-site, .tilda-custom-site) .hero .eyebrow { font-size: 30px; }
+  :is(#tilda-custom-site, .tilda-custom-site) .hero h1 { font-size: clamp(36px, 8vw, 48px); }
+  :is(#tilda-custom-site, .tilda-custom-site) .hero__lead { font-size: clamp(22px, 5vw, 28px); }
 
-  .hero__stats,
-  .split,
-  .expo__grid,
-  .registration__grid,
-  .speaker-contact__inner,
-  .footer__grid {
+  :is(#tilda-custom-site, .tilda-custom-site) .hero__stats,
+  :is(#tilda-custom-site, .tilda-custom-site) .split,
+  :is(#tilda-custom-site, .tilda-custom-site) .expo__grid,
+  :is(#tilda-custom-site, .tilda-custom-site) .speaker-contact__inner,
+  :is(#tilda-custom-site, .tilda-custom-site) .footer__grid {
     grid-template-columns: 1fr;
   }
 
-  .organizer-card { grid-template-columns: 180px minmax(0, 1fr); }
-  .program-tabs { grid-template-columns: repeat(2, 1fr); }
-  .session { grid-template-columns: 1fr; }
+  :is(#tilda-custom-site, .tilda-custom-site) .organizer-card { grid-template-columns: 180px minmax(0, 1fr); }
+  :is(#tilda-custom-site, .tilda-custom-site) .program-tabs { grid-template-columns: repeat(2, 1fr); }
+  :is(#tilda-custom-site, .tilda-custom-site) .session { grid-template-columns: 1fr; }
 
-  .session__time {
+  :is(#tilda-custom-site, .tilda-custom-site) .session__time {
     border-right: 0;
     border-bottom: 1px solid var(--border);
     border-radius: var(--radius) var(--radius) 0 0;
   }
 
-  .registration__grid { grid-template-columns: minmax(0, 1fr); }
-
-  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-  .history-grid { grid-template-columns: repeat(2, 1fr); }
-  .footer__logos { justify-content: flex-start; }
+  :is(#tilda-custom-site, .tilda-custom-site) .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  :is(#tilda-custom-site, .tilda-custom-site) .history-grid { grid-template-columns: repeat(2, 1fr); }
+  :is(#tilda-custom-site, .tilda-custom-site) .footer__logos { justify-content: flex-start; }
 }
 
 @media (max-width: 620px) {
-  .container { width: min(100% - 24px, var(--container)); }
-  .section { padding: 58px 0; }
-  .hero { min-height: auto; }
-  .hero__content {
+  :is(#tilda-custom-site, .tilda-custom-site) .container { width: min(100% - 24px, var(--container)); }
+  :is(#tilda-custom-site, .tilda-custom-site) .section { padding: 58px 0; }
+  :is(#tilda-custom-site, .tilda-custom-site) .hero { min-height: auto; }
+  :is(#tilda-custom-site, .tilda-custom-site) .hero__content {
     width: min(100% - 24px, var(--container));
     padding-bottom: 24px;
   }
-  .eyebrow { font-size: 20px; }
-  .hero .eyebrow { font-size: 24px; }
-  .hero h1 { font-size: 34px; }
-  .hero__lead { font-size: 22px; }
-  .market-visual {
+  :is(#tilda-custom-site, .tilda-custom-site) .eyebrow { font-size: 20px; }
+  :is(#tilda-custom-site, .tilda-custom-site) .hero .eyebrow { font-size: 24px; }
+  :is(#tilda-custom-site, .tilda-custom-site) .hero h1 { font-size: 34px; }
+  :is(#tilda-custom-site, .tilda-custom-site) .hero__lead { font-size: 22px; }
+  :is(#tilda-custom-site, .tilda-custom-site) .market-visual {
     min-height: 220px;
     margin-top: 30px;
   }
 
-  .hero__stats,
-  .benefits-grid,
-  .value-chain,
-  .program-tabs,
-  .speaker-grid,
-  .speaker-grid.compact,
-  .route-list,
-  .history-grid,
-  .gallery-grid {
+  :is(#tilda-custom-site, .tilda-custom-site) .hero__stats,
+  :is(#tilda-custom-site, .tilda-custom-site) .benefits-grid,
+  :is(#tilda-custom-site, .tilda-custom-site) .value-chain,
+  :is(#tilda-custom-site, .tilda-custom-site) .program-tabs,
+  :is(#tilda-custom-site, .tilda-custom-site) .speaker-grid,
+  :is(#tilda-custom-site, .tilda-custom-site) .speaker-grid.compact,
+  :is(#tilda-custom-site, .tilda-custom-site) .route-list,
+  :is(#tilda-custom-site, .tilda-custom-site) .history-grid,
+  :is(#tilda-custom-site, .tilda-custom-site) .gallery-grid {
     grid-template-columns: 1fr;
   }
 
-  .benefit-card { min-height: auto; }
-  .benefit-card__icon { margin-bottom: 18px; }
+  :is(#tilda-custom-site, .tilda-custom-site) .benefit-card { min-height: auto; }
+  :is(#tilda-custom-site, .tilda-custom-site) .benefit-card__icon { margin-bottom: 18px; }
 
-  .session__body,
-  .session__time,
-  .form {
+  :is(#tilda-custom-site, .tilda-custom-site) .session__body,
+  :is(#tilda-custom-site, .tilda-custom-site) .session__time {
     padding: 20px;
   }
 
-  .form__actions { grid-template-columns: 1fr; }
-
-  .organizer-card {
+  :is(#tilda-custom-site, .tilda-custom-site) .organizer-card {
     grid-template-columns: 1fr;
     padding: 20px;
   }
 
-  .organizer-card__logo { min-height: 110px; }
+  :is(#tilda-custom-site, .tilda-custom-site) .organizer-card__logo { min-height: 110px; }
 
-  .cookie-banner {
+  :is(#tilda-custom-site, .tilda-custom-site) .cookie-banner {
     right: 12px;
     bottom: 82px;
     grid-template-columns: 1fr;
     width: calc(100% - 24px);
   }
 
-  .mobile-cta {
+  :is(#tilda-custom-site, .tilda-custom-site) .mobile-cta {
     position: sticky;
     bottom: 0;
     z-index: 40;
@@ -1677,11 +1459,18 @@ h1, h2, h3 {
     border-top: 1px solid var(--border);
   }
 
-  .mobile-cta .btn { width: 100%; }
+  :is(#tilda-custom-site, .tilda-custom-site) .mobile-cta .btn { width: 100%; }
 
-  .lightbox__nav {
+  :is(#tilda-custom-site, .tilda-custom-site) .lightbox__nav {
     top: auto;
     bottom: 18px;
     transform: none;
   }
 }
+
+
+/* Tilda safety layer */
+:is(#tilda-custom-site, .tilda-custom-site) { width: 100vw !important; max-width: 100vw !important; min-height: 100vh; margin-left: calc(50% - 50vw) !important; overflow-x: clip; position: relative; }
+
+</style>
+
