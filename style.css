@@ -798,16 +798,16 @@ h1, h2, h3 {
   margin-bottom: 8px;
   color: #ffffff;
   font-size: clamp(18px, 2vw, 22px);
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.2;
 }
 
 .invited-speakers p {
   max-width: 880px;
   margin: 0;
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.88);
   font-size: clamp(18px, 1.7vw, 21px);
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.4;
 }
 
