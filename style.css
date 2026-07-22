@@ -752,31 +752,40 @@ h1, h2, h3 {
 }
 
 .accordion-trigger::after {
-  content: "+";
-  display: grid;
+  content: "";
+  display: block;
   flex: 0 0 40px;
-  place-items: center;
   width: 40px;
   height: 40px;
   border: 1px solid rgba(249, 115, 22, 0.34);
   border-radius: 50%;
-  background: rgba(249, 115, 22, 0.12);
+  background:
+    linear-gradient(currentColor 0 0) center / 16px 2px no-repeat,
+    linear-gradient(currentColor 0 0) center / 2px 16px no-repeat,
+    rgba(249, 115, 22, 0.12);
   color: var(--accent-str);
-  font-size: 30px;
-  font-weight: 900;
-  line-height: 1;
   transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
 }
 
 .accordion-trigger:hover::after {
-  background: var(--accent-str);
+  background:
+    linear-gradient(currentColor 0 0) center / 16px 2px no-repeat,
+    linear-gradient(currentColor 0 0) center / 2px 16px no-repeat,
+    var(--accent-str);
   color: #ffffff;
   transform: scale(1.08);
 }
 
 .accordion-trigger[aria-expanded="true"]::after {
-  content: "−";
-  padding-bottom: 3px;
+  background:
+    linear-gradient(currentColor 0 0) center / 16px 2px no-repeat,
+    rgba(249, 115, 22, 0.12);
+}
+
+.accordion-trigger[aria-expanded="true"]:hover::after {
+  background:
+    linear-gradient(currentColor 0 0) center / 16px 2px no-repeat,
+    var(--accent-str);
 }
 
 .accordion-content {
