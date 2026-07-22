@@ -56,7 +56,7 @@
           <a class="hero__link" href="#program">Смотреть программу</a>
         </div>
       </div>
-      <div class="hero__stats container" aria-label="Ключевые темы конференции">
+      <div class="hero__stats container" aria-label="Ключевые темы форума">
         <article>
           <strong>3</strong>
           <span>сессии: спрос, технологии и практические решения рынка</span>
@@ -125,7 +125,7 @@
           <p class="eyebrow">Кому подойдет мероприятие</p>
           <h2 id="audience-title">Для управленцев и специалистов, которые отвечают за рост, качество и экономику готовой еды</h2>
         </div>
-        <div class="audience-tags" aria-label="Целевая аудитория конференции">
+        <div class="audience-tags" aria-label="Целевая аудитория форума">
           <span>Собственники бизнеса</span>
           <span>Генеральные директора</span>
           <span>Коммерческие директора</span>
@@ -337,8 +337,8 @@
         </div>
         <div class="gallery-grid">
           <article class="gallery-card">
-            <img src="ЗалКонференции.jpg" alt="Зал конференции" loading="lazy">
-            <span>Зал конференции</span>
+            <img src="ЗалКонференции.jpg" alt="Зал форума" loading="lazy">
+            <span>Зал форума</span>
           </article>
           <article class="gallery-card">
             <img src="Выставочная экспозиция.jpg" alt="Выставочная экспозиция" loading="lazy">
@@ -368,7 +368,7 @@
       <div class="container registration__grid">
         <div class="registration__copy">
           <p class="eyebrow">Бесплатная регистрация</p>
-          <h2 id="registration-title">Зарегистрируйтесь на конференцию</h2>
+          <h2 id="registration-title">ЗАРЕГИСТРИРУЙТЕСЬ НА ФОРУМ</h2>
           <p>Оставьте данные, и команда организаторов отправит подтверждение участия на email. Участие бесплатное по предварительной регистрации.</p>
           <div class="registration__note" aria-label="Условия участия">
             <span>28 сентября 2026</span>
@@ -385,22 +385,22 @@
           <div class="form__step is-active" data-form-step="1">
             <div class="form__row">
               <label for="fname">Имя</label>
-              <input id="fname" name="fname" type="text" autocomplete="given-name" placeholder="Имя" required>
+              <input id="fname" name="fname" type="text" autocomplete="given-name" placeholder="Имя" maxlength="60" data-validate="person" required>
               <small class="form__error"></small>
             </div>
             <div class="form__row">
               <label for="lname">Фамилия</label>
-              <input id="lname" name="lname" type="text" autocomplete="family-name" placeholder="Фамилия" required>
+              <input id="lname" name="lname" type="text" autocomplete="family-name" placeholder="Фамилия" maxlength="80" data-validate="person" required>
               <small class="form__error"></small>
             </div>
             <div class="form__row">
               <label for="tname">Отчество</label>
-              <input id="tname" name="tname" type="text" autocomplete="additional-name" placeholder="Отчество">
+              <input id="tname" name="tname" type="text" autocomplete="additional-name" placeholder="Отчество" maxlength="80" data-validate="person">
               <small class="form__error"></small>
             </div>
             <div class="form__row">
               <label for="phone">Телефон</label>
-              <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="Мобильный телефон" required>
+              <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="Мобильный телефон" maxlength="24" data-validate="phone" required>
               <small class="form__error"></small>
             </div>
             <div class="form__row">
@@ -414,22 +414,22 @@
           <div class="form__step" data-form-step="2">
             <div class="form__row">
               <label for="city">Город</label>
-              <input id="city" name="city" type="text" autocomplete="address-level2" placeholder="Город" required>
+              <input id="city" name="city" type="text" autocomplete="address-level2" placeholder="Город" maxlength="80" data-validate="city" required>
               <small class="form__error"></small>
             </div>
             <div class="form__row">
               <label for="status">Должность</label>
-              <input id="status" name="status" type="text" autocomplete="organization-title" placeholder="Должность" required>
+              <input id="status" name="status" type="text" autocomplete="organization-title" placeholder="Должность" maxlength="120" data-validate="business-text" required>
               <small class="form__error"></small>
             </div>
             <div class="form__row">
               <label for="company">Компания</label>
-              <input id="company" name="company" type="text" autocomplete="organization" placeholder="Компания" required>
+              <input id="company" name="company" type="text" autocomplete="organization" placeholder="Компания" maxlength="160" data-validate="business-text" required>
               <small class="form__error"></small>
             </div>
             <div class="form__row">
               <label for="sfera">Сфера</label>
-              <input id="sfera" name="sfera" type="text" placeholder="Сфера деятельности компании" required>
+              <input id="sfera" name="sfera" type="text" placeholder="Сфера деятельности компании" maxlength="180" data-validate="business-text" required>
               <small class="form__error"></small>
             </div>
             <label class="checkbox">
@@ -446,7 +446,7 @@
           <p class="form__error form__error--submit" role="alert"></p>
           <div class="form__success" role="status" aria-live="polite" hidden>
             <span aria-hidden="true">✓</span>
-            <p>Спасибо за регистрацию! Ваш билет на конференцию ждёт Вас на почте.</p>
+            <p>Спасибо за регистрацию! Ваш билет на форум ждёт Вас на почте.</p>
           </div>
         </form>
       </div>
@@ -473,7 +473,7 @@
               <img src="imperia-forum_logo.svg" alt="Империя Форум">
             </div>
             <div>
-              <h3>Организатор конференции «Стратегические вызовы АПК: готовая еда»</h3>
+              <h3>Организатор форума «Стратегические вызовы АПК: готовая еда»</h3>
               <p>Конгрессно-Выставочная Компания «ИМПЕРИЯ ФОРУМ» – организатор деловых мероприятий на агропромышленном рынке, в том числе одного из ключевых отраслевых Форумов «Стратегические вызовы АПК: инвестиции, цифровые технологии, повышение эффективности», и один из ключевых партнеров АО «ЭКСПОЦЕНТР» по организации деловой программы крупнейшей отраслевой выставки «Агропродмаш».</p>
             </div>
           </article>
@@ -489,7 +489,7 @@
           <p>Комитет программы открыт к предложениям от производителей, технологов, регуляторов и компаний, которые готовы показать работающую практику рынка.</p>
         </div>
         <div class="contact-card">
-          <strong>Продюсер конференции:<span>Евгений Статецкий</span></strong>
+          <strong>Продюсер форума:<span>Евгений Статецкий</span></strong>
           <a href="mailto:marketer1@imperia-forums.ru">marketer1@imperia-forums.ru</a>
           <a class="btn btn--secondary" href="mailto:marketer1@imperia-forums.ru" target="_blank" rel="noopener">Связаться с оргкомитетом</a>
         </div>

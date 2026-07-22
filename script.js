@@ -394,19 +394,52 @@ accordionTriggers.forEach((trigger) => {
 });
 
 const form = document.querySelector("[data-form]");
-const webhookUrl = "https://reg.online-czs.ru/bitrix_hooks/add_deal/";
+const textLetterPattern = "A-Za-zА-Яа-яЁё";
 
 function setFieldState(input, message) {
   const row = input.closest(".form__row");
   const error = row?.querySelector(".form__error");
   const isValid = message === true;
   input.classList.toggle("is-invalid", !isValid);
+  input.setAttribute("aria-invalid", String(!isValid));
   if (error) error.textContent = isValid ? "" : message;
   return isValid;
 }
 
+function sanitizeField(input) {
+  const rule = input.dataset.validate;
+  const value = input.value;
+
+  if (rule === "person") {
+    input.value = value
+      .replace(/[^A-Za-zА-Яа-яЁё\s'-]/g, "")
+      .replace(/\s{2,}/g, " ")
+      .replace(/-{2,}/g, "-")
+      .replace(/'{2,}/g, "'");
+  }
+
+  if (rule === "city") {
+    input.value = value
+      .replace(/[^A-Za-zА-Яа-яЁё\s.'-]/g, "")
+      .replace(/\s{2,}/g, " ")
+      .replace(/-{2,}/g, "-")
+      .replace(/\.{2,}/g, ".");
+  }
+
+  if (rule === "phone") {
+    let sanitized = value.replace(/[^\d+()\-\s]/g, "");
+    sanitized = sanitized.replace(/(?!^)\+/g, "");
+    input.value = sanitized;
+  }
+}
+
+function countLetters(value) {
+  return (value.match(/[A-Za-zА-Яа-яЁё]/g) || []).length;
+}
+
 function validateField(input) {
   const value = input.value.trim();
+  const rule = input.dataset.validate;
 
   if (input.required && !value) {
     return setFieldState(input, "Заполните поле");
@@ -416,10 +449,41 @@ function validateField(input) {
     return setFieldState(input, "Введите корректный email");
   }
 
+  if (!value) {
+    return setFieldState(input, true);
+  }
+
+  const personPattern = new RegExp(`^[${textLetterPattern}]+(?:[\\s'-][${textLetterPattern}]+)*$`);
+  const cityPattern = new RegExp(`^[${textLetterPattern}]+(?:[\\s.'-][${textLetterPattern}]+)*$`);
+  const businessPattern = new RegExp(`^[${textLetterPattern}0-9\\s"'«».,:;()№&+\\/-]+$`);
+
+  if (rule === "person" && !personPattern.test(value)) {
+    return setFieldState(input, "Укажите только буквы, пробел или дефис");
+  }
+
+  if (rule === "city" && !cityPattern.test(value)) {
+    return setFieldState(input, "Укажите город без цифр и лишних символов");
+  }
+
+  if (rule === "phone") {
+    const digits = value.replace(/\D/g, "");
+    if (!/^\+?[\d\s()-]+$/.test(value) || digits.length < 10 || digits.length > 15) {
+      return setFieldState(input, "Введите корректный телефон");
+    }
+  }
+
+  if (rule === "business-text") {
+    const allowed = businessPattern.test(value);
+    if (!allowed || countLetters(value) < 2) {
+      return setFieldState(input, "Укажите корректные данные");
+    }
+  }
+
   return setFieldState(input, true);
 }
 
 if (form) {
+  const webhookUrl = form.action;
   const steps = Array.from(form.querySelectorAll("[data-form-step]"));
   const nextButton = form.querySelector("[data-form-next]");
   const backButton = form.querySelector("[data-form-back]");
@@ -445,12 +509,18 @@ if (form) {
   }
 
   function validateStep(step) {
-    return getStepInputs(step).every(validateField);
+    return getStepInputs(step).map(validateField).every(Boolean);
   }
 
   inputs.forEach((input) => {
-    input.addEventListener("input", () => validateField(input));
-    input.addEventListener("blur", () => validateField(input));
+    input.addEventListener("input", () => {
+      sanitizeField(input);
+      validateField(input);
+    });
+    input.addEventListener("blur", () => {
+      input.value = input.value.trim().replace(/\s{2,}/g, " ");
+      validateField(input);
+    });
   });
 
   checkbox?.addEventListener("change", () => {
@@ -473,7 +543,7 @@ if (form) {
       return;
     }
 
-    const fieldsValid = inputs.every(validateField);
+    const fieldsValid = inputs.map(validateField).every(Boolean);
     const privacyValid = Boolean(checkbox?.checked);
 
     if (checkboxError) checkboxError.textContent = privacyValid ? "" : "Подтвердите согласие";
@@ -495,7 +565,9 @@ if (form) {
 
       form.reset();
       inputs.forEach((input) => input.classList.remove("is-invalid"));
+      form.classList.add("is-success");
       steps.forEach((step) => { step.hidden = true; });
+      if (submitError) submitError.hidden = true;
       if (success) success.hidden = false;
     } catch (error) {
       if (submitError) {
