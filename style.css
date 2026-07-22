@@ -1114,7 +1114,7 @@ h1, h2, h3 {
 
 .registration__copy h2 {
   margin: 0;
-  color: #ffffff;
+  color: var(--accent-str);
   font-size: 46px;
   font-weight: 700;
   line-height: 0.95;
