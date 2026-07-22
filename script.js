@@ -393,56 +393,6 @@ accordionTriggers.forEach((trigger) => {
   });
 });
 
-const galleryItems = Array.from(document.querySelectorAll(".gallery-item"));
-const lightbox = document.querySelector("[data-lightbox]");
-const lightboxImage = document.querySelector("[data-lightbox-image]");
-const lightboxClose = document.querySelector("[data-lightbox-close]");
-const lightboxPrev = document.querySelector("[data-lightbox-prev]");
-const lightboxNext = document.querySelector("[data-lightbox-next]");
-let activeImageIndex = 0;
-
-function openLightbox(index) {
-  if (!lightbox || !lightboxImage) return;
-  activeImageIndex = index;
-  const item = galleryItems[activeImageIndex];
-  const image = item.querySelector("img");
-  lightboxImage.src = item.dataset.src || image.src;
-  lightboxImage.alt = image.alt;
-  lightbox.hidden = false;
-  document.body.style.overflow = "hidden";
-}
-
-function closeLightbox() {
-  if (!lightbox || !lightboxImage) return;
-  lightbox.hidden = true;
-  lightboxImage.src = "";
-  document.body.style.overflow = "";
-}
-
-function moveLightbox(direction) {
-  const nextIndex = (activeImageIndex + direction + galleryItems.length) % galleryItems.length;
-  openLightbox(nextIndex);
-}
-
-galleryItems.forEach((item, index) => {
-  item.addEventListener("click", () => openLightbox(index));
-});
-
-lightboxClose?.addEventListener("click", closeLightbox);
-lightboxPrev?.addEventListener("click", () => moveLightbox(-1));
-lightboxNext?.addEventListener("click", () => moveLightbox(1));
-
-lightbox?.addEventListener("click", (event) => {
-  if (event.target === lightbox) closeLightbox();
-});
-
-document.addEventListener("keydown", (event) => {
-  if (!lightbox || lightbox.hidden) return;
-  if (event.key === "Escape") closeLightbox();
-  if (event.key === "ArrowLeft") moveLightbox(-1);
-  if (event.key === "ArrowRight") moveLightbox(1);
-});
-
 const form = document.querySelector("[data-form]");
 const webhookUrl = "https://reg.online-czs.ru/bitrix_hooks/add_deal/";
 
