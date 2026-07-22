@@ -188,6 +188,8 @@ h1, h2, h3 {
 
 .hero__media {
   z-index: 0;
+  pointer-events: none;
+  user-select: none;
   background:
     linear-gradient(90deg, rgba(9, 9, 12, 0.30), rgba(9, 9, 12, 0.18)),
     url("ЗалКонференции.jpg") center / cover no-repeat;
@@ -201,6 +203,8 @@ h1, h2, h3 {
   transform: scale(1.10);
   transform-origin: center center;
   display: block;
+  pointer-events: none;
+  user-select: none;
 }
 
 .hero__media.video-fallback .hero__video {
