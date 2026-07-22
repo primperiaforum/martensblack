@@ -188,6 +188,9 @@ h1, h2, h3 {
 
 .hero__media {
   z-index: 0;
+  background:
+    linear-gradient(90deg, rgba(9, 9, 12, 0.30), rgba(9, 9, 12, 0.18)),
+    url("ЗалКонференции.jpg") center / cover no-repeat;
 }
 
 .hero__video {
@@ -198,6 +201,10 @@ h1, h2, h3 {
   transform: scale(1.10);
   transform-origin: center center;
   display: block;
+}
+
+.hero__media.video-fallback .hero__video {
+  opacity: 0;
 }
 
 .hero__overlay {
@@ -1544,6 +1551,96 @@ h1, h2, h3 {
   .speaker-grid.compact { grid-template-columns: repeat(3, 1fr); }
 }
 
+@media (max-width: 1024px) {
+  .section { padding: 72px 0; }
+
+  .site-header { grid-template-columns: auto auto; }
+
+  .brand__logo {
+    width: 70px;
+    height: 70px;
+  }
+
+  .nav-toggle {
+    display: block;
+    justify-self: end;
+  }
+
+  .site-nav {
+    position: fixed;
+    inset: 72px 0 auto;
+    display: grid;
+    gap: 0;
+    padding: 8px 16px 18px;
+    background: rgba(9, 9, 12, 0.99);
+    backdrop-filter: blur(20px);
+    transform: translateY(-120%);
+    transition: transform 0.24s ease;
+  }
+
+  .site-nav.is-open { transform: translateY(0); }
+
+  .site-nav a {
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-cta { display: none; }
+
+  .nav-toggle.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+  .nav-toggle.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .hero { min-height: auto; }
+  .hero__content {
+    padding-top: 96px;
+    padding-bottom: 30px;
+  }
+
+  .hero .eyebrow { font-size: 30px; }
+  .hero h1 { font-size: 48px; }
+  .hero__lead {
+    max-width: 820px;
+    margin-top: 22px;
+    font-size: 28px;
+  }
+
+  .hero__actions { margin-top: 28px; }
+
+  .hero__stats article {
+    min-height: auto;
+    padding: 18px 20px;
+  }
+}
+
+@media (max-height: 720px) and (min-width: 621px) {
+  .hero { min-height: auto; }
+
+  .hero__content {
+    padding-top: 72px;
+    padding-bottom: 24px;
+  }
+
+  .hero .eyebrow { font-size: 28px; }
+  .hero h1 { font-size: 44px; }
+  .hero__lead {
+    margin-top: 18px;
+    font-size: 24px;
+  }
+
+  .hero__meta { margin-top: 22px; }
+  .hero__actions { margin-top: 24px; }
+
+  .hero__stats {
+    padding-bottom: 16px;
+  }
+
+  .hero__stats article {
+    min-height: auto;
+    padding: 16px 18px;
+  }
+}
+
 @media (max-width: 860px) {
   .site-header { grid-template-columns: auto auto; }
   .brand__logo {
@@ -1583,8 +1680,8 @@ h1, h2, h3 {
 
   .hero__content { padding-top: 86px; }
   .hero .eyebrow { font-size: 30px; }
-  .hero h1 { font-size: clamp(36px, 8vw, 48px); }
-  .hero__lead { font-size: clamp(22px, 5vw, 28px); }
+  .hero h1 { font-size: 42px; }
+  .hero__lead { font-size: 24px; }
 
   .hero__stats,
   .split,
@@ -1643,6 +1740,7 @@ h1, h2, h3 {
 
   .benefit-card { min-height: auto; }
   .benefit-card__icon { margin-bottom: 18px; }
+  .gallery-card span { font-size: 24px; }
 
   .session__body,
   .session__time,
@@ -1658,6 +1756,16 @@ h1, h2, h3 {
   }
 
   .organizer-card__logo { min-height: 110px; }
+
+  .footer__logos {
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .footer__apm,
+  .footer__imperia {
+    width: min(210px, 100%);
+  }
 
   .cookie-banner {
     right: 12px;

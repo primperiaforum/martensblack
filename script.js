@@ -308,6 +308,37 @@
 const navToggle = document.querySelector("[data-nav-toggle]");
 const nav = document.querySelector("[data-nav]");
 
+const heroVideo = document.querySelector(".hero__video");
+
+if (heroVideo) {
+  heroVideo.muted = true;
+  heroVideo.defaultMuted = true;
+  heroVideo.playsInline = true;
+  heroVideo.setAttribute("muted", "");
+  heroVideo.setAttribute("playsinline", "");
+  heroVideo.setAttribute("webkit-playsinline", "");
+
+  const tryPlayHeroVideo = () => {
+    const playPromise = heroVideo.play();
+    if (playPromise?.catch) {
+      playPromise.catch(() => {
+        heroVideo.closest(".hero__media")?.classList.add("video-fallback");
+      });
+    }
+  };
+
+  if (heroVideo.readyState >= 2) {
+    tryPlayHeroVideo();
+  } else {
+    heroVideo.addEventListener("canplay", tryPlayHeroVideo, { once: true });
+  }
+
+  window.addEventListener("pageshow", tryPlayHeroVideo);
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) tryPlayHeroVideo();
+  });
+}
+
 if (navToggle && nav) {
   navToggle.addEventListener("click", () => {
     const isOpen = nav.classList.toggle("is-open");
