@@ -1234,6 +1234,15 @@ h1, h2, h3 {
   font-family: var(--font-mono);
 }
 
+.form__error--submit {
+  min-height: 0;
+  margin: 0;
+}
+
+.form__error--submit:empty {
+  display: none;
+}
+
 .checkbox {
   display: grid;
   grid-template-columns: 22px 1fr;
