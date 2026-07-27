@@ -3,6 +3,7 @@
   const canvas = document.getElementById("hero-canvas");
   if (!canvas) return;
   const ctx = canvas.getContext("2d");
+  if (!ctx) return;
 
   let W, H, particles, rafId, scanY = 0;
 
@@ -193,8 +194,12 @@
     rafId = requestAnimationFrame(animate);
   }
 
-  const ro = new ResizeObserver(() => { resize(); });
-  ro.observe(canvas);
+  if ("ResizeObserver" in window) {
+    const ro = new ResizeObserver(() => { resize(); });
+    ro.observe(canvas);
+  } else {
+    window.addEventListener("resize", resize);
+  }
 
   start();
 })();
@@ -206,6 +211,7 @@
   if (!canvas) return;
 
   const ctx = canvas.getContext("2d");
+  if (!ctx) return;
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let width = 0;
   let height = 0;
@@ -299,7 +305,11 @@
   }
 
   resize();
-  new ResizeObserver(resize).observe(canvas);
+  if ("ResizeObserver" in window) {
+    new ResizeObserver(resize).observe(canvas);
+  } else {
+    window.addEventListener("resize", resize);
+  }
   rafId = requestAnimationFrame(draw);
 
   window.addEventListener("beforeunload", () => cancelAnimationFrame(rafId));
