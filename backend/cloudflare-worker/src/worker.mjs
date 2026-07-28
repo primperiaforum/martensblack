@@ -136,7 +136,7 @@ async function handleRequest(request, env = {}) {
   }
 
   outbound.set("checkbox", "Да");
-  appendAttributionFields(outbound, request, origin, validation.tracking);
+  const attribution = appendAttributionFields(outbound, request, origin, validation.tracking);
 
   let crmResponse;
   try {
@@ -144,7 +144,8 @@ async function handleRequest(request, env = {}) {
       crmEndpoint,
       {
         method: "POST",
-        body: outbound
+        body: outbound,
+        headers: buildCrmHeaders(attribution)
       },
       getPositiveInt(env.BITRIX_TIMEOUT_MS, 8000)
     );
@@ -318,13 +319,27 @@ function appendAttributionFields(outbound, request, origin, tracking) {
   const referrer = normalizePageUrl(tracking.referrer, "");
   const sourceHost = getHostname(sourceOrigin) || requestUrl.hostname;
 
-  outbound.set("website", sourceOrigin || `https://${sourceHost}`);
+  outbound.set("website", pageUrl || sourceOrigin || `https://${sourceHost}`);
   outbound.set("source_website", sourceHost);
   outbound.set("source_origin", sourceOrigin);
   outbound.set("page_url", pageUrl);
+  outbound.set("PAGE_URL", pageUrl);
   outbound.set("landing_page", pageUrl);
+  outbound.set("LANDING_PAGE", pageUrl);
   outbound.set("source_path", tracking.source_path || "");
   outbound.set("referrer", referrer);
+  outbound.set("referer", pageUrl);
+  outbound.set("HTTP_REFERER", pageUrl);
+  outbound.set("url", pageUrl);
+  outbound.set("URL", pageUrl);
+  outbound.set("page", pageUrl);
+  outbound.set("pageUrl", pageUrl);
+  outbound.set("form_url", pageUrl);
+  outbound.set("form_page", pageUrl);
+  outbound.set("source_url", pageUrl);
+  outbound.set("SOURCE_URL", pageUrl);
+  outbound.set("site", sourceHost);
+  outbound.set("site_url", sourceOrigin);
 
   for (const name of ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id"]) {
     outbound.set(name, tracking[name] || "");
@@ -334,6 +349,24 @@ function appendAttributionFields(outbound, request, origin, tracking) {
   for (const name of ["gclid", "yclid", "fbclid"]) {
     outbound.set(name, tracking[name] || "");
   }
+
+  return { pageUrl, sourceOrigin, sourceHost };
+}
+
+function buildCrmHeaders(attribution) {
+  const headers = {};
+  const pageUrl = attribution?.pageUrl || attribution?.sourceOrigin || "";
+  const sourceOrigin = attribution?.sourceOrigin || "";
+
+  if (pageUrl) {
+    headers.Referer = pageUrl;
+  }
+
+  if (sourceOrigin) {
+    headers.Origin = sourceOrigin;
+  }
+
+  return headers;
 }
 
 function normalizePageUrl(value, fallbackOrigin, requiredOrigin = "") {
