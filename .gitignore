@@ -2,6 +2,9 @@ node_modules/
 .wrangler/
 backend/cloudflare-worker/.dev.vars
 backend/cloudflare-worker/.admin-token.local.txt
+backend/masterhost-php/config.php
+backend/masterhost-php/storage/*
+!backend/masterhost-php/storage/.htaccess
 tilda_clean_export/
 Выставочная экспозиция.jpg
 Готовая еда будущего.webp

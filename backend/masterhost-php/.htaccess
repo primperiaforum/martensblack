@@ -1,0 +1,13 @@
+Options -Indexes
+
+<Files "config.php">
+  Require all denied
+  Order allow,deny
+  Deny from all
+</Files>
+
+<FilesMatch "\.(sqlite|sqlite3|db|log|csv)$">
+  Require all denied
+  Order allow,deny
+  Deny from all
+</FilesMatch>
