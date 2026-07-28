@@ -504,9 +504,36 @@ if (form) {
   const submitError = form.querySelector(".form__error--submit");
   const success = form.querySelector(".form__success");
   const startedAtInput = form.querySelector("[data-form-started-at]");
+  const trackingFields = Array.from(form.querySelectorAll("[data-tracking-field]"));
   let currentStep = 1;
 
   if (startedAtInput) startedAtInput.value = String(Date.now());
+
+  function fillTrackingFields() {
+    const params = new URLSearchParams(window.location.search);
+    const trackingData = {
+      page_url: window.location.href,
+      source_origin: window.location.origin,
+      source_path: `${window.location.pathname}${window.location.search}`,
+      referrer: document.referrer || "",
+      utm_source: params.get("utm_source") || "",
+      utm_medium: params.get("utm_medium") || "",
+      utm_campaign: params.get("utm_campaign") || "",
+      utm_content: params.get("utm_content") || "",
+      utm_term: params.get("utm_term") || "",
+      utm_id: params.get("utm_id") || "",
+      gclid: params.get("gclid") || "",
+      yclid: params.get("yclid") || "",
+      fbclid: params.get("fbclid") || ""
+    };
+
+    trackingFields.forEach((input) => {
+      const name = input.dataset.trackingField;
+      input.value = trackingData[name] || "";
+    });
+  }
+
+  fillTrackingFields();
 
   function setStep(step) {
     currentStep = step;

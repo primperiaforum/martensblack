@@ -114,6 +114,7 @@ CSS специально написан через:
 2. Worker берет настоящий webhook из секрета `BITRIX_WEBHOOK_URL`.
 3. Worker проверяет origin, honeypot, скорость заполнения, размер запроса, whitelist полей, формат и длину значений, rate limit по IP и по email+phone.
 4. В Bitrix уходит только очищенный набор ожидаемых полей.
+5. Для аналитики Worker добавляет `website`, `source_website`, `page_url`, `landing_page`, `referrer`, `utm_*`, `gclid`, `yclid`, `fbclid`.
 
 Текущий Worker endpoint:
 

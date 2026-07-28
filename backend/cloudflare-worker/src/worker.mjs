@@ -18,11 +18,28 @@ const FIELD_RULES = {
   sfera: { label: "Сфера деятельности", required: true, max: 180, type: "business" }
 };
 
+const TRACKING_FIELD_RULES = {
+  page_url: { max: 600, type: "url" },
+  source_origin: { max: 160, type: "url" },
+  source_path: { max: 400, type: "tracking" },
+  referrer: { max: 600, type: "url" },
+  utm_source: { max: 160, type: "tracking" },
+  utm_medium: { max: 160, type: "tracking" },
+  utm_campaign: { max: 220, type: "tracking" },
+  utm_content: { max: 220, type: "tracking" },
+  utm_term: { max: 220, type: "tracking" },
+  utm_id: { max: 120, type: "tracking" },
+  gclid: { max: 260, type: "tracking" },
+  yclid: { max: 260, type: "tracking" },
+  fbclid: { max: 260, type: "tracking" }
+};
+
 const PERSON_PATTERN = /^\p{L}+(?:[\s'-]\p{L}+)*$/u;
 const CITY_PATTERN = /^\p{L}+(?:[\s.'-]\p{L}+)*$/u;
 const BUSINESS_PATTERN = /^[\p{L}\p{N}\s"'«».,:;()№&+/-]+$/u;
 const EMAIL_PATTERN = /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/;
 const SAFE_URL_PATTERN = /^https:\/\/[^\s<>"']+$/i;
+const TRACKING_PATTERN = /^[\p{L}\p{N}\s._~:/?#[\]@!$&'()*+,;=%-]*$/u;
 
 export default {
   async fetch(request, env) {
@@ -119,6 +136,7 @@ async function handleRequest(request, env = {}) {
   }
 
   outbound.set("checkbox", "Да");
+  appendAttributionFields(outbound, request, origin, validation.tracking);
 
   let crmResponse;
   try {
@@ -189,7 +207,7 @@ function jsonResponse(payload, status, headers = {}) {
 }
 
 function hasBotTrap(formData) {
-  return cleanText(formData.get("website"), 120).length > 0;
+  return cleanText(formData.get("homepage"), 120).length > 0;
 }
 
 function isTooFast(formData, env) {
@@ -225,8 +243,23 @@ function validatePayload(formData) {
   return {
     ok: Object.keys(errors).length === 0,
     data,
+    tracking: validateTracking(formData),
     errors
   };
+}
+
+function validateTracking(formData) {
+  const tracking = {};
+
+  for (const [name, rule] of Object.entries(TRACKING_FIELD_RULES)) {
+    const value = cleanText(formData.get(name), rule.max);
+    if (!value || value.length > rule.max || containsDangerousChars(value)) continue;
+    if (rule.type === "url" && !isSafeHttpUrl(value)) continue;
+    if (rule.type === "tracking" && !TRACKING_PATTERN.test(value)) continue;
+    tracking[name] = value;
+  }
+
+  return tracking;
 }
 
 function validateField(value, rule) {
@@ -276,6 +309,61 @@ function getClientIp(request) {
     request.headers.get("X-Forwarded-For")?.split(",")[0]?.trim() ||
     "unknown"
   );
+}
+
+function appendAttributionFields(outbound, request, origin, tracking) {
+  const requestUrl = new URL(request.url);
+  const sourceOrigin = origin;
+  const pageUrl = normalizePageUrl(tracking.page_url, sourceOrigin, sourceOrigin);
+  const referrer = normalizePageUrl(tracking.referrer, "");
+  const sourceHost = getHostname(sourceOrigin) || requestUrl.hostname;
+
+  outbound.set("website", sourceOrigin || `https://${sourceHost}`);
+  outbound.set("source_website", sourceHost);
+  outbound.set("source_origin", sourceOrigin);
+  outbound.set("page_url", pageUrl);
+  outbound.set("landing_page", pageUrl);
+  outbound.set("source_path", tracking.source_path || "");
+  outbound.set("referrer", referrer);
+
+  for (const name of ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id"]) {
+    outbound.set(name, tracking[name] || "");
+    outbound.set(name.toUpperCase(), tracking[name] || "");
+  }
+
+  for (const name of ["gclid", "yclid", "fbclid"]) {
+    outbound.set(name, tracking[name] || "");
+  }
+}
+
+function normalizePageUrl(value, fallbackOrigin, requiredOrigin = "") {
+  if (!value) return fallbackOrigin;
+
+  try {
+    const url = new URL(value);
+    const isHttp = url.protocol === "https:" || url.protocol === "http:";
+    const hasExpectedOrigin = !requiredOrigin || url.origin === requiredOrigin;
+    return isHttp && hasExpectedOrigin ? url.href : fallbackOrigin;
+  } catch (error) {
+    return fallbackOrigin;
+  }
+}
+
+function isSafeHttpUrl(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" || url.protocol === "http:";
+  } catch (error) {
+    return false;
+  }
+}
+
+function getHostname(value) {
+  try {
+    return new URL(value).hostname;
+  } catch (error) {
+    return "";
+  }
 }
 
 async function hitRateLimit(env, key, options) {

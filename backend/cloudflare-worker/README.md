@@ -11,6 +11,7 @@ Cloudflare Worker hides the Bitrix webhook from the static GitHub Pages site and
 - request body size is capped;
 - only the expected form fields are forwarded;
 - client-provided `title`, `id_category`, and `formid` are ignored and replaced server-side;
+- source attribution is forwarded as `website`, `source_website`, `page_url`, `landing_page`, `referrer`, `utm_*`, `gclid`, `yclid`, and `fbclid`;
 - text is normalized, length-limited, and rejected when it contains HTML/script-friendly characters;
 - IP and lead-identity rate limits are applied;
 - Bitrix requests have a timeout.
