@@ -3,7 +3,7 @@ main = "src/worker.mjs"
 compatibility_date = "2026-07-22"
 
 [vars]
-ALLOWED_ORIGINS = "https://primperiaforum.github.io"
+ALLOWED_ORIGINS = "https://primperiaforum.github.io,https://apk-forum.ru,https://www.apk-forum.ru"
 BITRIX_TITLE = "ф-б-АПК-26-09-оф"
 BITRIX_CATEGORY_ID = "27"
 BITRIX_FORM_ID = "111"
