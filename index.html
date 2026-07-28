@@ -337,10 +337,15 @@
           </div>
         </div>
 
-        <form class="form" action="https://reg.online-czs.ru/bitrix_hooks/add_deal/" method="post" novalidate data-form>
+        <form class="form" action="https://martensblack-lead-proxy.endykartrait1488.workers.dev/lead" method="post" novalidate data-form>
           <input type="hidden" name="title" value="ф-б-АПК-26-09-оф">
           <input type="hidden" name="id_category" value="27">
           <input type="hidden" name="formid" value="111">
+          <div class="form__trap" aria-hidden="true">
+            <label for="website">Сайт</label>
+            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" data-honeypot>
+          </div>
+          <input type="hidden" name="form_started_at" data-form-started-at>
 
           <div class="form__step is-active" data-form-step="1">
             <div class="form__row">

@@ -12,6 +12,7 @@
 - `index.html` - основной HTML исходного сайта.
 - `style.css` - основной CSS исходного сайта.
 - `script.js` - интерактив: меню, табы программы, аккордеоны, lightbox, cookie banner, canvas-анимации.
+- `backend/cloudflare-worker/` - serverless-proxy для отправки формы в Bitrix без публикации webhook в HTML/JS.
 - `Text-Fonts-Sizes.html` - таблица текстов сайта с размерами, жирностью и шрифтами для основной desktop-версии.
 - `APM_logo.png`, `expocentr_logo.svg`, `imperia-forum_logo.svg` - логотипы.
 - `IMG_5091.MP4` - видео в обложке.
@@ -99,7 +100,34 @@ CSS специально написан через:
 
 Если кнопки `Зарегистрироваться` должны скроллить к форме, у Tilda-блока формы должен быть якорь `reg`.
 
-В статической GitHub-версии форма регистрации есть в `index.html` как обычный HTML-блок с `id="reg"` и отправкой на `https://reg.online-czs.ru/bitrix_hooks/add_deal/`.
+В статической GitHub-версии форма регистрации есть в `index.html` как обычный HTML-блок с `id="reg"`.
+
+## Защита формы 2026-07-22
+
+Прямой Bitrix webhook не должен храниться в HTML/JS. Для GitHub Pages добавлен proxy на Cloudflare Worker:
+
+`backend/cloudflare-worker/`
+
+Схема:
+
+1. `index.html` отправляет форму на публичный Worker endpoint `/lead`.
+2. Worker берет настоящий webhook из секрета `BITRIX_WEBHOOK_URL`.
+3. Worker проверяет origin, honeypot, скорость заполнения, размер запроса, whitelist полей, формат и длину значений, rate limit по IP и по email+phone.
+4. В Bitrix уходит только очищенный набор ожидаемых полей.
+
+Текущий Worker endpoint:
+
+```
+https://martensblack-lead-proxy.endykartrait1488.workers.dev/lead
+```
+
+Настоящий webhook вводится только командой:
+
+```bash
+npx wrangler secret put BITRIX_WEBHOOK_URL
+```
+
+Подробности деплоя лежат в `backend/cloudflare-worker/README.md`.
 
 ## Синхронизация с продом 2026-07-21
 

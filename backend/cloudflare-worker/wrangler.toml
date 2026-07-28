@@ -1,0 +1,20 @@
+name = "martensblack-lead-proxy"
+main = "src/worker.mjs"
+compatibility_date = "2026-07-22"
+
+[vars]
+ALLOWED_ORIGINS = "https://primperiaforum.github.io"
+BITRIX_TITLE = "ф-б-АПК-26-09-оф"
+BITRIX_CATEGORY_ID = "27"
+BITRIX_FORM_ID = "111"
+MAX_BODY_BYTES = "16000"
+MIN_SUBMIT_MS = "2500"
+BITRIX_TIMEOUT_MS = "8000"
+RATE_LIMIT_IP_MAX = "5"
+RATE_LIMIT_IP_WINDOW_SECONDS = "600"
+RATE_LIMIT_LEAD_MAX = "2"
+RATE_LIMIT_LEAD_WINDOW_SECONDS = "86400"
+
+[[kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "2116ee453592464cb535885dbec6a49b"

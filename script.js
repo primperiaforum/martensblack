@@ -493,17 +493,20 @@ function validateField(input) {
 }
 
 if (form) {
-  const webhookUrl = form.action;
+  const formEndpoint = form.action;
   const steps = Array.from(form.querySelectorAll("[data-form-step]"));
   const nextButton = form.querySelector("[data-form-next]");
   const backButton = form.querySelector("[data-form-back]");
   const submitButton = form.querySelector(".form__submit");
-  const inputs = Array.from(form.querySelectorAll("input[type='text'], input[type='email'], input[type='tel']"));
+  const inputs = Array.from(form.querySelectorAll("input[type='text']:not([data-honeypot]), input[type='email'], input[type='tel']"));
   const checkbox = form.querySelector("input[name='checkbox']");
   const checkboxError = form.querySelector(".form__error--checkbox");
   const submitError = form.querySelector(".form__error--submit");
   const success = form.querySelector(".form__success");
+  const startedAtInput = form.querySelector("[data-form-started-at]");
   let currentStep = 1;
+
+  if (startedAtInput) startedAtInput.value = String(Date.now());
 
   function setStep(step) {
     currentStep = step;
@@ -520,6 +523,24 @@ if (form) {
 
   function validateStep(step) {
     return getStepInputs(step).map(validateField).every(Boolean);
+  }
+
+  function isEndpointConfigured(endpoint) {
+    return Boolean(endpoint && !endpoint.includes("your-subdomain") && !endpoint.includes("example."));
+  }
+
+  function getSubmitErrorMessage(errorCode) {
+    const messages = {
+      too_many_requests: "Слишком много заявок подряд. Попробуйте отправить форму немного позже.",
+      too_fast: "Попробуйте отправить форму ещё раз через пару секунд.",
+      validation_failed: "Проверьте заполнение формы и попробуйте ещё раз.",
+      forbidden_origin: "Форма временно недоступна с этого адреса сайта.",
+      proxy_not_configured: "Форма временно недоступна. Напишите организаторам на email.",
+      crm_unavailable: "CRM временно не отвечает. Попробуйте ещё раз.",
+      crm_rejected: "CRM не приняла заявку. Попробуйте ещё раз."
+    };
+
+    return messages[errorCode] || "Не удалось отправить заявку. Попробуйте ещё раз.";
   }
 
   inputs.forEach((input) => {
@@ -566,12 +587,29 @@ if (form) {
     }
 
     try {
-      await fetch(webhookUrl, {
+      if (!isEndpointConfigured(formEndpoint)) {
+        throw new Error("proxy_not_configured");
+      }
+
+      const response = await fetch(formEndpoint, {
         method: "POST",
         body: new FormData(form),
-        mode: "no-cors",
-        credentials: "include"
+        headers: {
+          Accept: "application/json"
+        },
+        credentials: "omit"
       });
+
+      let result = {};
+      try {
+        result = await response.json();
+      } catch (error) {
+        result = {};
+      }
+
+      if (!response.ok || result.ok !== true) {
+        throw new Error(result.error || "request_failed");
+      }
 
       form.reset();
       inputs.forEach((input) => input.classList.remove("is-invalid"));
@@ -581,7 +619,7 @@ if (form) {
       if (success) success.hidden = false;
     } catch (error) {
       if (submitError) {
-        submitError.textContent = "Не удалось отправить заявку. Попробуйте ещё раз.";
+        submitError.textContent = getSubmitErrorMessage(error.message);
       }
       if (submitButton) {
         submitButton.disabled = false;

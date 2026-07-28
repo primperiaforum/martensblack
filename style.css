@@ -1120,6 +1120,22 @@ h1, h2, h3 {
   overflow: hidden;
 }
 
+.form__trap {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.form__trap input {
+  position: absolute;
+  left: -100vw;
+}
+
 .form__step {
   display: none;
   gap: 14px;
