@@ -571,6 +571,98 @@ if (form) {
     return messages[errorCode] || "Не удалось отправить заявку. Попробуйте ещё раз.";
   }
 
+  function isNetworkError(error) {
+    return error instanceof TypeError || error.message === "network_error";
+  }
+
+  function submitWithIframe(endpoint, formData) {
+    return new Promise((resolve, reject) => {
+      const frameName = `lead-proxy-frame-${Date.now()}`;
+      const iframe = document.createElement("iframe");
+      const fallbackForm = document.createElement("form");
+      let submittedAt = 0;
+      const timeout = window.setTimeout(() => {
+        cleanup();
+        reject(new Error("network_error"));
+      }, 18000);
+
+      function cleanup() {
+        window.clearTimeout(timeout);
+        iframe.remove();
+        fallbackForm.remove();
+      }
+
+      iframe.name = frameName;
+      iframe.hidden = true;
+      iframe.addEventListener("load", () => {
+        if (!submittedAt || Date.now() - submittedAt < 300) return;
+        cleanup();
+        resolve({ ok: true });
+      });
+      iframe.addEventListener("error", () => {
+        cleanup();
+        reject(new Error("network_error"));
+      }, { once: true });
+
+      fallbackForm.method = "POST";
+      fallbackForm.action = endpoint;
+      fallbackForm.target = frameName;
+      fallbackForm.hidden = true;
+
+      formData.forEach((value, name) => {
+        if (value instanceof File) return;
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = name;
+        input.value = String(value);
+        fallbackForm.append(input);
+      });
+
+      document.body.append(iframe, fallbackForm);
+      submittedAt = Date.now();
+      fallbackForm.submit();
+    });
+  }
+
+  function submitWithBeacon(endpoint, formData) {
+    if (!navigator.sendBeacon) return false;
+
+    try {
+      return navigator.sendBeacon(endpoint, formData);
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async function submitLead(endpoint) {
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        body: formData,
+        credentials: "omit"
+      });
+
+      let result = {};
+      try {
+        result = await response.json();
+      } catch (error) {
+        result = {};
+      }
+
+      if (!response.ok || result.ok !== true) {
+        throw new Error(result.error || "request_failed");
+      }
+
+      return result;
+    } catch (error) {
+      if (!isNetworkError(error)) throw error;
+      if (submitWithBeacon(endpoint, formData)) return { ok: true };
+      return submitWithIframe(endpoint, formData);
+    }
+  }
+
   inputs.forEach((input) => {
     input.addEventListener("input", () => {
       sanitizeField(input);
@@ -619,25 +711,7 @@ if (form) {
         throw new Error("proxy_not_configured");
       }
 
-      const response = await fetch(formEndpoint, {
-        method: "POST",
-        body: new FormData(form),
-        headers: {
-          Accept: "application/json"
-        },
-        credentials: "omit"
-      });
-
-      let result = {};
-      try {
-        result = await response.json();
-      } catch (error) {
-        result = {};
-      }
-
-      if (!response.ok || result.ok !== true) {
-        throw new Error(result.error || "request_failed");
-      }
+      await submitLead(formEndpoint);
 
       form.reset();
       inputs.forEach((input) => input.classList.remove("is-invalid"));
