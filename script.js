@@ -209,6 +209,7 @@
 (function initMarketVisual() {
   const canvas = document.getElementById("market-visual-canvas");
   if (!canvas) return;
+  if (canvas.closest("[hidden]")) return;
 
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
