@@ -1,6 +1,7 @@
 node_modules/
 .wrangler/
 backend/cloudflare-worker/.dev.vars
+backend/cloudflare-worker/.admin-token.local.txt
 tilda_clean_export/
 Выставочная экспозиция.jpg
 Готовая еда будущего.webp

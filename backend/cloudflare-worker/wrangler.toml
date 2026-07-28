@@ -18,3 +18,9 @@ RATE_LIMIT_LEAD_WINDOW_SECONDS = "86400"
 [[kv_namespaces]]
 binding = "RATE_LIMIT"
 id = "2116ee453592464cb535885dbec6a49b"
+
+[[d1_databases]]
+binding = "LEADS_DB"
+database_name = "martensblack-leads"
+database_id = "a60d43fd-62fe-4a92-b42c-7ce6bd2fc067"
+migrations_dir = "migrations"

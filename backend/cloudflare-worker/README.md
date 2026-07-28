@@ -15,6 +15,9 @@ Cloudflare Worker hides the Bitrix webhook from the static GitHub Pages site and
 - text is normalized, length-limited, and rejected when it contains HTML/script-friendly characters;
 - IP and lead-identity rate limits are applied;
 - Bitrix requests have a timeout.
+- valid leads are stored in Cloudflare D1 before forwarding to Bitrix;
+- if Bitrix is unavailable after the D1 write, the client still receives success and the lead remains in the database with `forward_status = failed`;
+- `GET /export` can download CSV when called with `Authorization: Bearer <ADMIN_TOKEN>`.
 
 ## Setup
 
@@ -30,7 +33,13 @@ npx wrangler --version
 npx wrangler secret put BITRIX_WEBHOOK_URL
 ```
 
-3. Optional but recommended: create persistent rate-limit storage.
+3. Add an admin token for CSV export:
+
+```bash
+npx wrangler secret put ADMIN_TOKEN
+```
+
+4. Optional but recommended: create persistent rate-limit storage.
 
 ```bash
 npx wrangler kv namespace create RATE_LIMIT
@@ -40,13 +49,20 @@ Then paste the returned `id` into `wrangler.toml` under `[[kv_namespaces]]`.
 
 Without KV the Worker still uses an in-memory limit, but it is not persistent across Cloudflare isolates.
 
-4. Deploy:
+5. Create and apply D1 migrations:
+
+```bash
+npx wrangler d1 create martensblack-leads
+npx wrangler d1 migrations apply martensblack-leads --remote
+```
+
+6. Deploy:
 
 ```bash
 npx wrangler deploy
 ```
 
-5. The deployed Worker URL currently used by `index.html` is:
+7. The deployed Worker URL currently used by `index.html` is:
 
 ```text
 https://martensblack-lead-proxy.endykartrait1488.workers.dev/lead

@@ -42,20 +42,29 @@ const SAFE_URL_PATTERN = /^https:\/\/[^\s<>"']+$/i;
 const TRACKING_PATTERN = /^[\p{L}\p{N}\s._~:/?#[\]@!$&'()*+,;=%-]*$/u;
 
 export default {
-  async fetch(request, env) {
-    return handleRequest(request, env);
+  async fetch(request, env, ctx) {
+    return handleRequest(request, env, ctx);
   }
 };
 
-async function handleRequest(request, env = {}) {
+async function handleRequest(request, env = {}, ctx = {}) {
   const origin = normalizeOrigin(request.headers.get("Origin") || "");
   const cors = buildCorsHeaders(origin, env);
+  const url = new URL(request.url);
 
   if (request.method === "OPTIONS") {
     return new Response(null, {
       status: cors.allowed ? 204 : 403,
       headers: cors.headers
     });
+  }
+
+  if (request.method === "GET" && url.pathname === "/health") {
+    return jsonResponse({ ok: true }, 200);
+  }
+
+  if (request.method === "GET" && url.pathname === "/export") {
+    return exportLeads(request, env);
   }
 
   if (request.method !== "POST") {
@@ -66,15 +75,11 @@ async function handleRequest(request, env = {}) {
     return jsonResponse({ ok: false, error: "forbidden_origin" }, 403, cors.headers);
   }
 
-  const url = new URL(request.url);
   if (url.pathname !== "/lead") {
     return jsonResponse({ ok: false, error: "not_found" }, 404, cors.headers);
   }
 
   const crmEndpoint = String(env.BITRIX_WEBHOOK_URL || "").trim();
-  if (!SAFE_URL_PATTERN.test(crmEndpoint)) {
-    return jsonResponse({ ok: false, error: "proxy_not_configured" }, 500, cors.headers);
-  }
 
   const maxBodyBytes = getPositiveInt(env.MAX_BODY_BYTES, 16000);
   const contentLength = Number(request.headers.get("Content-Length") || 0);
@@ -127,9 +132,15 @@ async function handleRequest(request, env = {}) {
   }
 
   const outbound = new FormData();
-  outbound.set("title", getSafeEnvValue(env.BITRIX_TITLE, DEFAULT_BITRIX_FIELDS.title, 80));
-  outbound.set("id_category", getSafeEnvValue(env.BITRIX_CATEGORY_ID, DEFAULT_BITRIX_FIELDS.id_category, 20));
-  outbound.set("formid", getSafeEnvValue(env.BITRIX_FORM_ID, DEFAULT_BITRIX_FIELDS.formid, 20));
+  const bitrixFields = {
+    title: getSafeEnvValue(env.BITRIX_TITLE, DEFAULT_BITRIX_FIELDS.title, 80),
+    id_category: getSafeEnvValue(env.BITRIX_CATEGORY_ID, DEFAULT_BITRIX_FIELDS.id_category, 20),
+    formid: getSafeEnvValue(env.BITRIX_FORM_ID, DEFAULT_BITRIX_FIELDS.formid, 20)
+  };
+
+  outbound.set("title", bitrixFields.title);
+  outbound.set("id_category", bitrixFields.id_category);
+  outbound.set("formid", bitrixFields.formid);
 
   for (const [name, value] of Object.entries(validation.data)) {
     outbound.set(name, value);
@@ -137,6 +148,20 @@ async function handleRequest(request, env = {}) {
 
   outbound.set("checkbox", "Да");
   const attribution = appendAttributionFields(outbound, request, origin, validation.tracking);
+  const leadRecord = buildLeadRecord({
+    request,
+    origin,
+    data: validation.data,
+    tracking: validation.tracking,
+    bitrixFields,
+    attribution
+  });
+  const savedLead = await saveLead(env, leadRecord);
+
+  if (!SAFE_URL_PATTERN.test(crmEndpoint)) {
+    await updateLeadForwardStatus(env, leadRecord.id, "failed", 0, "proxy_not_configured");
+    return respondAfterCrmFailure("proxy_not_configured", savedLead, cors.headers);
+  }
 
   let crmResponse;
   try {
@@ -150,14 +175,26 @@ async function handleRequest(request, env = {}) {
       getPositiveInt(env.BITRIX_TIMEOUT_MS, 8000)
     );
   } catch (error) {
-    return jsonResponse({ ok: false, error: "crm_unavailable" }, 502, cors.headers);
+    await updateLeadForwardStatus(env, leadRecord.id, "failed", 0, "crm_unavailable");
+    return respondAfterCrmFailure("crm_unavailable", savedLead, cors.headers);
   }
 
   if (!crmResponse.ok) {
-    return jsonResponse({ ok: false, error: "crm_rejected" }, 502, cors.headers);
+    await updateLeadForwardStatus(env, leadRecord.id, "failed", crmResponse.status, "crm_rejected");
+    return respondAfterCrmFailure("crm_rejected", savedLead, cors.headers);
   }
 
+  await updateLeadForwardStatus(env, leadRecord.id, "forwarded", crmResponse.status, "");
+
   return jsonResponse({ ok: true }, 200, cors.headers);
+}
+
+function respondAfterCrmFailure(error, savedLead, headers) {
+  if (savedLead) {
+    return jsonResponse({ ok: true, queued: true, warning: error }, 200, headers);
+  }
+
+  return jsonResponse({ ok: false, error }, 502, headers);
 }
 
 function buildCorsHeaders(origin, env) {
@@ -205,6 +242,209 @@ function jsonResponse(payload, status, headers = {}) {
       "X-Content-Type-Options": "nosniff"
     }
   });
+}
+
+function buildLeadRecord({ request, origin, data, tracking, bitrixFields, attribution }) {
+  const createdAt = new Date().toISOString();
+  const userAgent = cleanText(request.headers.get("User-Agent") || "", 500);
+  const sourceUrl = attribution.pageUrl || tracking.page_url || origin;
+  const payload = {
+    ...bitrixFields,
+    ...data,
+    checkbox: "Да",
+    source: {
+      origin,
+      url: sourceUrl,
+      host: attribution.sourceHost || "",
+      referrer: tracking.referrer || "",
+      path: tracking.source_path || ""
+    },
+    tracking
+  };
+
+  return {
+    id: crypto.randomUUID(),
+    createdAt,
+    fname: data.fname,
+    lname: data.lname,
+    tname: data.tname,
+    phone: data.phone,
+    email: data.email,
+    city: data.city,
+    status: data.status,
+    company: data.company,
+    sfera: data.sfera,
+    consent: 1,
+    sourceUrl,
+    origin,
+    userAgent,
+    payloadJson: JSON.stringify(payload),
+    trackingJson: JSON.stringify(tracking),
+    forwardStatus: "pending"
+  };
+}
+
+async function saveLead(env, lead) {
+  if (!env.LEADS_DB || typeof env.LEADS_DB.prepare !== "function") {
+    return false;
+  }
+
+  try {
+    await env.LEADS_DB.prepare(
+      `INSERT INTO leads (
+        id, created_at, fname, lname, tname, phone, email, city, status,
+        company, sfera, consent, source_url, origin, user_agent, payload_json,
+        tracking_json, forward_status
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    ).bind(
+      lead.id,
+      lead.createdAt,
+      lead.fname,
+      lead.lname,
+      lead.tname,
+      lead.phone,
+      lead.email,
+      lead.city,
+      lead.status,
+      lead.company,
+      lead.sfera,
+      lead.consent,
+      lead.sourceUrl,
+      lead.origin,
+      lead.userAgent,
+      lead.payloadJson,
+      lead.trackingJson,
+      lead.forwardStatus
+    ).run();
+
+    return true;
+  } catch (error) {
+    console.error("lead_save_failed", String(error?.message || error));
+    return false;
+  }
+}
+
+async function updateLeadForwardStatus(env, id, status, crmStatus, error) {
+  if (!id || !env.LEADS_DB || typeof env.LEADS_DB.prepare !== "function") {
+    return;
+  }
+
+  try {
+    await env.LEADS_DB.prepare(
+      `UPDATE leads
+       SET forward_status = ?, crm_status = ?, forward_error = ?, forwarded_at = ?
+       WHERE id = ?`
+    ).bind(
+      status,
+      crmStatus || 0,
+      cleanText(error || "", 300),
+      status === "forwarded" ? new Date().toISOString() : null,
+      id
+    ).run();
+  } catch (updateError) {
+    console.error("lead_status_update_failed", String(updateError?.message || updateError));
+  }
+}
+
+async function exportLeads(request, env) {
+  if (!env.LEADS_DB || typeof env.LEADS_DB.prepare !== "function") {
+    return jsonResponse({ ok: false, error: "db_not_configured" }, 500);
+  }
+
+  if (!(await isAdminAuthorized(request, env))) {
+    return jsonResponse({ ok: false, error: "unauthorized" }, 401, {
+      "WWW-Authenticate": "Bearer"
+    });
+  }
+
+  const url = new URL(request.url);
+  const limit = Math.min(getPositiveInt(url.searchParams.get("limit"), 500), 2000);
+  const status = cleanText(url.searchParams.get("status") || "", 24);
+  const columns = [
+    "id",
+    "created_at",
+    "fname",
+    "lname",
+    "tname",
+    "phone",
+    "email",
+    "city",
+    "status",
+    "company",
+    "sfera",
+    "source_url",
+    "origin",
+    "forward_status",
+    "crm_status",
+    "forward_error",
+    "forwarded_at"
+  ];
+
+  const statement = status
+    ? env.LEADS_DB.prepare(
+      `SELECT ${columns.join(", ")}
+       FROM leads
+       WHERE forward_status = ?
+       ORDER BY created_at DESC
+       LIMIT ?`
+    ).bind(status, limit)
+    : env.LEADS_DB.prepare(
+      `SELECT ${columns.join(", ")}
+       FROM leads
+       ORDER BY created_at DESC
+       LIMIT ?`
+    ).bind(limit);
+
+  const result = await statement.run();
+  const rows = result.results || [];
+  const csv = toCsv(columns, rows);
+
+  return new Response(csv, {
+    status: 200,
+    headers: {
+      "Content-Type": "text/csv; charset=utf-8",
+      "Content-Disposition": `attachment; filename="apk-forum-leads-${new Date().toISOString().slice(0, 10)}.csv"`,
+      "Cache-Control": "no-store",
+      "X-Content-Type-Options": "nosniff"
+    }
+  });
+}
+
+async function isAdminAuthorized(request, env) {
+  const expected = String(env.ADMIN_TOKEN || "").trim();
+  if (!expected) return false;
+
+  const header = request.headers.get("Authorization") || "";
+  const actual = header.startsWith("Bearer ") ? header.slice(7).trim() : "";
+  return timingSafeEqual(actual, expected);
+}
+
+async function timingSafeEqual(actual, expected) {
+  const encoder = new TextEncoder();
+  const actualBytes = encoder.encode(actual);
+  const expectedBytes = encoder.encode(expected);
+  const actualDigest = await crypto.subtle.digest("SHA-256", actualBytes);
+  const expectedDigest = await crypto.subtle.digest("SHA-256", expectedBytes);
+  const actualArray = new Uint8Array(actualDigest);
+  const expectedArray = new Uint8Array(expectedDigest);
+  let diff = 0;
+
+  for (let index = 0; index < actualArray.length; index += 1) {
+    diff |= actualArray[index] ^ expectedArray[index];
+  }
+
+  return diff === 0;
+}
+
+function toCsv(columns, rows) {
+  const header = columns.join(",");
+  const body = rows.map((row) => columns.map((column) => csvCell(row[column])).join(","));
+  return [header, ...body].join("\r\n");
+}
+
+function csvCell(value) {
+  const text = String(value ?? "");
+  return `"${text.replace(/"/g, '""')}"`;
 }
 
 function hasBotTrap(formData) {
