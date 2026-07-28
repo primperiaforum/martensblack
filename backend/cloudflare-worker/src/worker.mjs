@@ -1,7 +1,7 @@
 const DEFAULT_ALLOWED_ORIGINS = ["https://primperiaforum.github.io"];
 
 const DEFAULT_BITRIX_FIELDS = {
-  title: "ф-б-АПК-26-09-оф",
+  title: "ф-б-АПМ-26-09-эц-апк-оф",
   id_category: "27",
   formid: "111"
 };

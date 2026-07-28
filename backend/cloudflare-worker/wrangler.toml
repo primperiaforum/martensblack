@@ -4,7 +4,7 @@ compatibility_date = "2026-07-22"
 
 [vars]
 ALLOWED_ORIGINS = "https://primperiaforum.github.io,https://apk-forum.ru,https://www.apk-forum.ru"
-BITRIX_TITLE = "ф-б-АПК-26-09-оф"
+BITRIX_TITLE = "ф-б-АПМ-26-09-эц-апк-оф"
 BITRIX_CATEGORY_ID = "27"
 BITRIX_FORM_ID = "111"
 MAX_BODY_BYTES = "16000"
