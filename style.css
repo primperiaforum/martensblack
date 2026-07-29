@@ -1712,6 +1712,16 @@ h1, h2, h3 {
     font-size: 19px;
     word-break: break-word;
   }
+  .hero__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    text-align: center;
+  }
   .hero__meta {
     flex-direction: column;
     align-items: flex-start;
@@ -1730,13 +1740,23 @@ h1, h2, h3 {
   .program-tabs,
   .speaker-grid,
   .speaker-grid.compact,
-  .route-list,
-  .history-grid {
+  .route-list {
     grid-template-columns: 1fr;
   }
 
   .benefit-card { min-height: auto; }
   .benefit-card__icon { margin-bottom: 18px; }
+  .history-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .history-card {
+    min-height: auto;
+    padding: 12px;
+  }
+  .history-card span {
+    font-size: 30px;
+  }
   .gallery-collage {
     display: grid;
     grid-template-columns: 1fr;
@@ -1747,6 +1767,10 @@ h1, h2, h3 {
   .session__time,
   .form {
     padding: 20px;
+  }
+
+  .registration__copy h2 {
+    font-size: 36px;
   }
 
   .form__actions { grid-template-columns: 1fr; }
