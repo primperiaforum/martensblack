@@ -1770,7 +1770,7 @@ h1, h2, h3 {
   }
 
   .registration__copy h2 {
-    font-size: 36px;
+    font-size: 28px;
   }
 
   .form__actions { grid-template-columns: 1fr; }
