@@ -162,6 +162,7 @@ Test-RequiredFile "source/script.min.js"
 Test-RequiredFile "source/CNAME"
 Test-RequiredFile "source/.gitignore"
 Test-RequiredFile "assets1/fav.ico"
+Test-RequiredFile "assets1/hero-poster.webp"
 Test-RequiredFile "assets1/IMG_5091.web.mp4"
 Test-RequiredFile "assets1/IMG_5091.MP4"
 Test-RequiredFile "assets1/logo/APM_logo.png"
@@ -194,6 +195,7 @@ if ($Remote) {
     "https://apk-forum.ru/sitemap.xml",
     "https://apk-forum.ru/assets1/IMG_5091.web.mp4",
     "https://apk-forum.ru/assets1/IMG_5091.MP4",
+    "https://apk-forum.ru/assets1/hero-poster.webp",
     "https://apk-forum.ru/assets1/logo/APM_logo.png",
     "https://apk-forum.ru/docs/cookie.html",
     "https://martensblack-lead-proxy.endykartrait1488.workers.dev/health"
