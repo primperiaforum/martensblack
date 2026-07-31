@@ -1,3 +1,32 @@
+function runWhenIdle(callback, timeout = 1200) {
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(callback, { timeout });
+  } else {
+    window.setTimeout(callback, 0);
+  }
+}
+
+function reportFrontendError(type, reason) {
+  try {
+    if (typeof window.ym === "function") {
+      window.ym(47924438, "reachGoal", "site_js_error", {
+        type,
+        reason: String(reason || "unknown").slice(0, 120)
+      });
+    }
+  } catch (error) {
+    // Error reporting must never create a second error loop.
+  }
+}
+
+window.addEventListener("error", (event) => {
+  reportFrontendError("error", event.message);
+});
+
+window.addEventListener("unhandledrejection", (event) => {
+  reportFrontendError("unhandledrejection", event.reason?.message || event.reason);
+});
+
 const navToggle = document.querySelector("[data-nav-toggle]");
 const nav = document.querySelector("[data-nav]");
 
@@ -465,13 +494,15 @@ const cookieBanner = document.querySelector("[data-cookie-banner]");
 const cookieAccept = document.querySelector("[data-cookie-accept]");
 const cookieStorageKey = "apm-food-cookie-accepted";
 
-if (cookieBanner && localStorage.getItem(cookieStorageKey) !== "true") {
-  cookieBanner.hidden = false;
-}
+runWhenIdle(() => {
+  if (cookieBanner && localStorage.getItem(cookieStorageKey) !== "true") {
+    cookieBanner.hidden = false;
+  }
 
-cookieAccept?.addEventListener("click", () => {
-  localStorage.setItem(cookieStorageKey, "true");
-  trackGoal("cookie_accept");
-  if (cookieBanner) cookieBanner.hidden = true;
+  cookieAccept?.addEventListener("click", () => {
+    localStorage.setItem(cookieStorageKey, "true");
+    trackGoal("cookie_accept");
+    if (cookieBanner) cookieBanner.hidden = true;
+  });
 });
 

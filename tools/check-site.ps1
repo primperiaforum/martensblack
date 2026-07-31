@@ -52,6 +52,22 @@ function Test-LocalHtmlLinks {
       Add-Failure "Broken local index.html path: $RawPath"
     }
   }
+
+  $SrcsetMatches = [regex]::Matches($Html, 'srcset="([^"]+)"')
+  foreach ($Match in $SrcsetMatches) {
+    $Entries = $Match.Groups[1].Value -split ","
+    foreach ($Entry in $Entries) {
+      $RawPath = ($Entry.Trim() -split "\s+")[0]
+      if (-not $RawPath -or $RawPath -match '^(https?:|data:)') {
+        continue
+      }
+
+      $CleanPath = Normalize-LocalPath $RawPath
+      if (-not (Test-Path -LiteralPath $CleanPath)) {
+        Add-Failure "Broken local index.html srcset path: $RawPath"
+      }
+    }
+  }
 }
 
 function Test-LocalCssUrls {
@@ -95,6 +111,7 @@ function Test-StaleRootReferences {
 
 function Test-AssetSizes {
   $Limits = @{
+    "assets1/IMG_5091.web.mp4" = 3MB
     "assets1/IMG_5091.MP4" = 8MB
   }
 
@@ -139,10 +156,13 @@ Test-RequiredFile ".gitignore"
 Test-RequiredFile "robots.txt"
 Test-RequiredFile "sitemap.xml"
 Test-RequiredFile "source/style.css"
+Test-RequiredFile "source/style.min.css"
 Test-RequiredFile "source/script.js"
+Test-RequiredFile "source/script.min.js"
 Test-RequiredFile "source/CNAME"
 Test-RequiredFile "source/.gitignore"
 Test-RequiredFile "assets1/fav.ico"
+Test-RequiredFile "assets1/IMG_5091.web.mp4"
 Test-RequiredFile "assets1/IMG_5091.MP4"
 Test-RequiredFile "assets1/logo/APM_logo.png"
 Test-RequiredFile "assets1/logo/expocentr_logo.svg"
@@ -168,10 +188,11 @@ if ($Remote) {
   Write-Host "Checking production URLs..."
   $RemoteUrls = @(
     "https://apk-forum.ru/",
-    "https://apk-forum.ru/source/style.css",
-    "https://apk-forum.ru/source/script.js",
+    "https://apk-forum.ru/source/style.min.css",
+    "https://apk-forum.ru/source/script.min.js",
     "https://apk-forum.ru/robots.txt",
     "https://apk-forum.ru/sitemap.xml",
+    "https://apk-forum.ru/assets1/IMG_5091.web.mp4",
     "https://apk-forum.ru/assets1/IMG_5091.MP4",
     "https://apk-forum.ru/assets1/logo/APM_logo.png",
     "https://apk-forum.ru/docs/cookie.html",
