@@ -1,0 +1,17 @@
+name: Site monitor
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+jobs:
+  production-health:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check production URLs
+        shell: pwsh
+        run: ./tools/check-site.ps1 -Remote

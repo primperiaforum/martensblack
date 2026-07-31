@@ -404,6 +404,16 @@ accordionTriggers.forEach((trigger) => {
   });
 });
 
+function trackGoal(name, params = {}) {
+  try {
+    if (typeof window.ym === "function") {
+      window.ym(47924438, "reachGoal", name, params);
+    }
+  } catch (error) {
+    // Analytics must never block the form or site UI.
+  }
+}
+
 const form = document.querySelector("[data-form]");
 const textLetterPattern = "A-Za-zА-Яа-яЁё";
 
@@ -679,7 +689,12 @@ if (form) {
   });
 
   nextButton?.addEventListener("click", () => {
-    if (validateStep(1)) setStep(2);
+    if (validateStep(1)) {
+      setStep(2);
+      trackGoal("form_step_next", { step: 1 });
+    } else {
+      trackGoal("form_validation_error", { step: 1 });
+    }
   });
 
   backButton?.addEventListener("click", () => {
@@ -690,7 +705,12 @@ if (form) {
     event.preventDefault();
 
     if (currentStep === 1) {
-      if (validateStep(1)) setStep(2);
+      if (validateStep(1)) {
+        setStep(2);
+        trackGoal("form_step_next", { step: 1 });
+      } else {
+        trackGoal("form_validation_error", { step: 1 });
+      }
       return;
     }
 
@@ -698,7 +718,10 @@ if (form) {
     const privacyValid = Boolean(checkbox?.checked);
 
     if (checkboxError) checkboxError.textContent = privacyValid ? "" : "Подтвердите согласие";
-    if (!fieldsValid || !privacyValid) return;
+    if (!fieldsValid || !privacyValid) {
+      trackGoal("form_validation_error", { step: 2 });
+      return;
+    }
 
     if (submitError) submitError.textContent = "";
     if (submitButton) {
@@ -707,11 +730,14 @@ if (form) {
     }
 
     try {
+      trackGoal("form_submit_start");
+
       if (!isEndpointConfigured(formEndpoint)) {
         throw new Error("proxy_not_configured");
       }
 
-      await submitLead(formEndpoint);
+      const submitResult = await submitLead(formEndpoint);
+      trackGoal(submitResult?.queued ? "form_submit_queued" : "form_submit_success");
 
       form.reset();
       inputs.forEach((input) => input.classList.remove("is-invalid"));
@@ -720,6 +746,7 @@ if (form) {
       if (submitError) submitError.hidden = true;
       if (success) success.hidden = false;
     } catch (error) {
+      trackGoal("form_submit_error", { reason: error?.message || "unknown" });
       if (submitError) {
         submitError.textContent = getSubmitErrorMessage(error.message);
       }
@@ -741,6 +768,7 @@ if (cookieBanner && localStorage.getItem(cookieStorageKey) !== "true") {
 
 cookieAccept?.addEventListener("click", () => {
   localStorage.setItem(cookieStorageKey, "true");
+  trackGoal("cookie_accept");
   if (cookieBanner) cookieBanner.hidden = true;
 });
 
