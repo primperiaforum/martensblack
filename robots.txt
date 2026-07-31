@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Host: apk-forum.ru
+Sitemap: https://apk-forum.ru/sitemap.xml

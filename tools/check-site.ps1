@@ -136,6 +136,8 @@ Write-Host "Checking required project files..."
 Test-RequiredFile "index.html"
 Test-RequiredFile "CNAME"
 Test-RequiredFile ".gitignore"
+Test-RequiredFile "robots.txt"
+Test-RequiredFile "sitemap.xml"
 Test-RequiredFile "source/style.css"
 Test-RequiredFile "source/script.js"
 Test-RequiredFile "source/CNAME"
@@ -168,6 +170,8 @@ if ($Remote) {
     "https://apk-forum.ru/",
     "https://apk-forum.ru/source/style.css",
     "https://apk-forum.ru/source/script.js",
+    "https://apk-forum.ru/robots.txt",
+    "https://apk-forum.ru/sitemap.xml",
     "https://apk-forum.ru/assets1/IMG_5091.MP4",
     "https://apk-forum.ru/assets1/logo/APM_logo.png",
     "https://apk-forum.ru/docs/cookie.html",
