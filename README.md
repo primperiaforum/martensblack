@@ -63,4 +63,6 @@ GitHub Pages берет сайт из ветки `main`. После push пра�
 4. Описать, что изменилось.
 5. Отдать pull request на проверку.
 
+Ветка `main` защищена: правки должны проходить через pull request и проверку `site-check`.
+
 Для подробного процесса смотри [docs/agent-workflow.md](docs/agent-workflow.md).
