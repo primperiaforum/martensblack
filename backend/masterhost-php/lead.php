@@ -79,7 +79,7 @@ if (!isSafeHttpsUrl($webhook)) {
 }
 
 $outbound = buildOutboundPayload($validation['data'], $validation['tracking'], $bitrixFields);
-$crm = postToBitrix($webhook, $outbound, (int)$config['bitrix_timeout_seconds']);
+$crm = postToBitrix($webhook, $outbound, (int)$config['bitrix_timeout_seconds'], buildCrmHeaders($validation['tracking']));
 
 if (!$crm['ok']) {
     updateLeadStatus($config, $lead['id'], 'failed', $crm['status'], $crm['error']);
@@ -449,8 +449,27 @@ function buildOutboundPayload(array $data, array $tracking, array $bitrixFields)
     return $payload;
 }
 
-function postToBitrix(string $url, array $payload, int $timeoutSeconds): array
+function buildCrmHeaders(array $tracking): array
 {
+    $pageUrl = $tracking['page_url'] ?? getOrigin();
+    $origin = getOrigin();
+    $headers = [];
+
+    if ($pageUrl !== '') {
+        $headers[] = 'Referer: ' . $pageUrl;
+    }
+
+    if ($origin !== '') {
+        $headers[] = 'Origin: ' . $origin;
+    }
+
+    return $headers;
+}
+
+function postToBitrix(string $url, array $payload, int $timeoutSeconds, array $crmHeaders = []): array
+{
+    $headers = array_merge(['Content-Type: application/x-www-form-urlencoded'], $crmHeaders);
+
     if (function_exists('curl_init')) {
         $ch = curl_init($url);
         curl_setopt_array($ch, [
@@ -459,7 +478,7 @@ function postToBitrix(string $url, array $payload, int $timeoutSeconds): array
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CONNECTTIMEOUT => $timeoutSeconds,
             CURLOPT_TIMEOUT => $timeoutSeconds,
-            CURLOPT_HTTPHEADER => ['Content-Type: application/x-www-form-urlencoded'],
+            CURLOPT_HTTPHEADER => $headers,
         ]);
         curl_exec($ch);
         $status = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -472,7 +491,7 @@ function postToBitrix(string $url, array $payload, int $timeoutSeconds): array
     $context = stream_context_create([
         'http' => [
             'method' => 'POST',
-            'header' => "Content-Type: application/x-www-form-urlencoded\r\n",
+            'header' => implode("\r\n", $headers) . "\r\n",
             'content' => http_build_query($payload),
             'timeout' => $timeoutSeconds,
             'ignore_errors' => true,
