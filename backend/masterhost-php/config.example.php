@@ -17,7 +17,7 @@ return [
     'bitrix_timeout_seconds' => 8,
 
     'bitrix_fields' => [
-        'title' => 'f-b-APM-26-09-ec-apk-of',
+        'title' => 'ф-б-АПМ-26-09-эц-апк-оф',
         'id_category' => '27',
         'formid' => '111',
     ],
