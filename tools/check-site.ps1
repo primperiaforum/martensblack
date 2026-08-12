@@ -198,7 +198,7 @@ if ($Remote) {
     "https://apk-forum.ru/assets1/hero-poster.webp",
     "https://apk-forum.ru/assets1/logo/APM_logo.png",
     "https://apk-forum.ru/docs/cookie.html",
-    "https://martensblack-lead-proxy.endykartrait1488.workers.dev/health"
+    "https://api.apk-forum.ru/"
   )
 
   foreach ($Url in $RemoteUrls) {
