@@ -1,6 +1,6 @@
-# Masterhost PHP lead proxy
+# APK forum PHP lead proxy
 
-This is a PHP fallback for the APK forum lead form. It is intended for a Russian hosting environment where Cloudflare Workers may be unreliable for visitors.
+This is the production PHP endpoint for the APK forum lead form. It hides the Bitrix webhook from the static site, validates requests, stores submitted leads locally, and forwards valid leads to CRM.
 
 ## Files
 
@@ -26,7 +26,7 @@ GET should return `method_not_allowed`. POST from the site should return JSON.
 
 ## Frontend action
 
-After the endpoint is tested, replace the form action in `index.html`:
+The production form action in `index.html` should point to:
 
 ```html
 action="https://api.apk-forum.ru/lead.php"
