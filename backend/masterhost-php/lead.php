@@ -69,24 +69,30 @@ if (!$validation['ok']) {
 }
 
 $bitrixFields = $config['bitrix_fields'];
-$lead = buildLead($validation['data'], $validation['tracking'], $bitrixFields);
+$outbound = buildOutboundPayload($validation['data'], $validation['tracking'], $bitrixFields);
+$lead = buildLead($validation['data'], $validation['tracking'], $bitrixFields, $outbound);
 $saved = saveLead($config, $lead);
 
 $webhook = trim((string)$config['bitrix_webhook_url']);
 if (!isSafeHttpsUrl($webhook)) {
     updateLeadStatus($config, $lead['id'], 'failed', 0, 'proxy_not_configured');
+    sendFailureAlert($config, $lead['id'], 'proxy_not_configured', 0);
     respondAfterCrmFailure('proxy_not_configured', $saved);
 }
 
-$outbound = buildOutboundPayload($validation['data'], $validation['tracking'], $bitrixFields);
 $crm = postToBitrix($webhook, $outbound, (int)$config['bitrix_timeout_seconds'], buildCrmHeaders($validation['tracking']));
 
 if (!$crm['ok']) {
-    updateLeadStatus($config, $lead['id'], 'failed', $crm['status'], $crm['error']);
+    updateLeadStatus($config, $lead['id'], 'queued', $crm['status'], $crm['error'], $crm['body'] ?? '');
+    sendFailureAlert($config, $lead['id'], $crm['error'], $crm['status']);
     respondAfterCrmFailure($crm['error'], $saved);
 }
 
-updateLeadStatus($config, $lead['id'], 'forwarded', $crm['status'], '');
+updateLeadStatus($config, $lead['id'], 'forwarded', $crm['status'], '', $crm['body'] ?? '');
+appendEventLog($config, 'lead_forwarded', [
+    'id' => $lead['id'],
+    'crm_status' => $crm['status'],
+]);
 jsonResponse(['ok' => true], 200);
 
 function handleCors(array $config): void
@@ -254,7 +260,7 @@ function containsDangerousChars(string $value): bool
     return preg_match('/[<>{}\[\]`\\\\]/u', $value) === 1;
 }
 
-function buildLead(array $data, array $tracking, array $bitrixFields): array
+function buildLead(array $data, array $tracking, array $bitrixFields, array $outboundPayload): array
 {
     $origin = getOrigin();
     $sourceUrl = $tracking['page_url'] ?? $origin;
@@ -287,7 +293,9 @@ function buildLead(array $data, array $tracking, array $bitrixFields): array
         'user_agent' => cleanText($_SERVER['HTTP_USER_AGENT'] ?? '', 500),
         'payload_json' => json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
         'tracking_json' => json_encode($tracking, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+        'outbound_json' => json_encode($outboundPayload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
         'forward_status' => 'pending',
+        'retry_count' => 0,
     ];
 }
 
@@ -300,14 +308,19 @@ function saveLead(array $config, array $lead): bool
             'INSERT INTO leads (
                 id, created_at, fname, lname, tname, phone, email, city, status,
                 company, sfera, consent, source_url, origin, user_agent,
-                payload_json, tracking_json, forward_status
+                payload_json, tracking_json, outbound_json, forward_status, retry_count
             ) VALUES (
                 :id, :created_at, :fname, :lname, :tname, :phone, :email, :city, :status,
                 :company, :sfera, :consent, :source_url, :origin, :user_agent,
-                :payload_json, :tracking_json, :forward_status
+                :payload_json, :tracking_json, :outbound_json, :forward_status, :retry_count
             )'
         );
         $stmt->execute($lead);
+        appendEventLog($config, 'lead_saved', [
+            'id' => $lead['id'],
+            'email' => $lead['email'],
+            'origin' => $lead['origin'],
+        ]);
         return true;
     } catch (Throwable $error) {
         error_log('lead_save_failed: ' . $error->getMessage());
@@ -315,17 +328,25 @@ function saveLead(array $config, array $lead): bool
     }
 }
 
-function updateLeadStatus(array $config, string $id, string $status, int $crmStatus, string $error): void
+function updateLeadStatus(array $config, string $id, string $status, int $crmStatus, string $error, string $responseBody = ''): void
 {
     try {
         $pdo = getPdo($config);
         ensureSchema($pdo);
+        $currentRetryCount = getRetryCount($pdo, $id);
+        $isAttempt = in_array($status, ['queued', 'failed', 'forwarded'], true);
+        $retryCount = $isAttempt ? $currentRetryCount + 1 : $currentRetryCount;
+        $nextRetryAt = $status === 'queued' ? gmdate('c', time() + getRetryDelaySeconds($config, $retryCount)) : null;
         $stmt = $pdo->prepare(
             'UPDATE leads
              SET forward_status = :forward_status,
                  crm_status = :crm_status,
                  forward_error = :forward_error,
-                 forwarded_at = :forwarded_at
+                 forwarded_at = :forwarded_at,
+                 retry_count = :retry_count,
+                 last_attempt_at = :last_attempt_at,
+                 next_retry_at = :next_retry_at,
+                 last_response = :last_response
              WHERE id = :id'
         );
         $stmt->execute([
@@ -333,11 +354,41 @@ function updateLeadStatus(array $config, string $id, string $status, int $crmSta
             ':crm_status' => $crmStatus,
             ':forward_error' => cleanText($error, 300),
             ':forwarded_at' => $status === 'forwarded' ? gmdate('c') : null,
+            ':retry_count' => $retryCount,
+            ':last_attempt_at' => $isAttempt ? gmdate('c') : null,
+            ':next_retry_at' => $nextRetryAt,
+            ':last_response' => cleanText($responseBody, 1000),
             ':id' => $id,
+        ]);
+        appendEventLog($config, 'lead_' . $status, [
+            'id' => $id,
+            'crm_status' => $crmStatus,
+            'error' => cleanText($error, 120),
+            'retry_count' => $retryCount,
+            'next_retry_at' => $nextRetryAt,
         ]);
     } catch (Throwable $updateError) {
         error_log('lead_status_update_failed: ' . $updateError->getMessage());
     }
+}
+
+function getRetryCount(PDO $pdo, string $id): int
+{
+    $stmt = $pdo->prepare('SELECT retry_count FROM leads WHERE id = :id');
+    $stmt->execute([':id' => $id]);
+    $value = $stmt->fetchColumn();
+    return is_numeric($value) ? (int)$value : 0;
+}
+
+function getRetryDelaySeconds(array $config, int $retryCount): int
+{
+    $schedule = $config['retry_delays_seconds'] ?? [60, 300, 900, 3600, 10800];
+    if (!is_array($schedule) || count($schedule) === 0) {
+        return 300;
+    }
+
+    $index = max(0, min($retryCount - 1, count($schedule) - 1));
+    return max(60, (int)$schedule[$index]);
 }
 
 function getPdo(array $config): PDO
@@ -370,15 +421,39 @@ function ensureSchema(PDO $pdo): void
             user_agent TEXT,
             payload_json TEXT NOT NULL,
             tracking_json TEXT,
+            outbound_json TEXT,
             forward_status TEXT NOT NULL DEFAULT 'pending',
+            retry_count INTEGER NOT NULL DEFAULT 0,
             crm_status INTEGER,
             forward_error TEXT,
-            forwarded_at TEXT
+            forwarded_at TEXT,
+            last_attempt_at TEXT,
+            next_retry_at TEXT,
+            last_response TEXT
         )"
     );
+    ensureColumn($pdo, 'leads', 'outbound_json', 'TEXT');
+    ensureColumn($pdo, 'leads', 'retry_count', 'INTEGER NOT NULL DEFAULT 0');
+    ensureColumn($pdo, 'leads', 'last_attempt_at', 'TEXT');
+    ensureColumn($pdo, 'leads', 'next_retry_at', 'TEXT');
+    ensureColumn($pdo, 'leads', 'last_response', 'TEXT');
     $pdo->exec('CREATE INDEX IF NOT EXISTS leads_created_at_idx ON leads(created_at)');
     $pdo->exec('CREATE INDEX IF NOT EXISTS leads_forward_status_idx ON leads(forward_status)');
     $pdo->exec('CREATE INDEX IF NOT EXISTS leads_email_idx ON leads(email)');
+    $pdo->exec('CREATE INDEX IF NOT EXISTS leads_next_retry_at_idx ON leads(next_retry_at)');
+}
+
+function ensureColumn(PDO $pdo, string $table, string $column, string $definition): void
+{
+    $stmt = $pdo->query('PRAGMA table_info(' . $table . ')');
+    $columns = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
+    foreach ($columns as $existingColumn) {
+        if (($existingColumn['name'] ?? '') === $column) {
+            return;
+        }
+    }
+
+    $pdo->exec('ALTER TABLE ' . $table . ' ADD COLUMN ' . $column . ' ' . $definition);
 }
 
 function appendLeadCsv(array $config, array $lead): bool
@@ -480,12 +555,12 @@ function postToBitrix(string $url, array $payload, int $timeoutSeconds, array $c
             CURLOPT_TIMEOUT => $timeoutSeconds,
             CURLOPT_HTTPHEADER => $headers,
         ]);
-        curl_exec($ch);
+        $body = (string)curl_exec($ch);
         $status = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error = curl_errno($ch) ? 'crm_unavailable' : '';
         curl_close($ch);
 
-        return ['ok' => $status >= 200 && $status < 300, 'status' => $status, 'error' => $error ?: 'crm_rejected'];
+        return ['ok' => $status >= 200 && $status < 300, 'status' => $status, 'error' => $error ?: 'crm_rejected', 'body' => $body];
     }
 
     $context = stream_context_create([
@@ -500,7 +575,7 @@ function postToBitrix(string $url, array $payload, int $timeoutSeconds, array $c
 
     $result = @file_get_contents($url, false, $context);
     $status = parseHttpStatus($http_response_header ?? []);
-    return ['ok' => $result !== false && $status >= 200 && $status < 300, 'status' => $status, 'error' => $result === false ? 'crm_unavailable' : 'crm_rejected'];
+    return ['ok' => $result !== false && $status >= 200 && $status < 300, 'status' => $status, 'error' => $result === false ? 'crm_unavailable' : 'crm_rejected', 'body' => is_string($result) ? $result : ''];
 }
 
 function parseHttpStatus(array $headers): int
@@ -521,6 +596,66 @@ function respondAfterCrmFailure(string $error, bool $saved): void
     }
 
     jsonResponse(['ok' => false, 'error' => $error], 502);
+}
+
+function appendEventLog(array $config, string $event, array $context = []): void
+{
+    try {
+        $storageDir = ensureStorageDir($config);
+        $line = json_encode([
+            'ts' => gmdate('c'),
+            'event' => $event,
+            'context' => $context,
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+        if ($line !== false) {
+            file_put_contents($storageDir . '/lead-events.log', $line . PHP_EOL, FILE_APPEND | LOCK_EX);
+        }
+    } catch (Throwable $error) {
+        error_log('lead_event_log_failed: ' . $error->getMessage());
+    }
+}
+
+function sendFailureAlert(array $config, string $leadId, string $error, int $crmStatus): void
+{
+    $context = [
+        'id' => $leadId,
+        'error' => cleanText($error, 120),
+        'crm_status' => $crmStatus,
+    ];
+    appendAlertLog($config, 'bitrix_forward_failed', $context);
+
+    $email = trim((string)($config['alert_email'] ?? ''));
+    if ($email === '' || filter_var($email, FILTER_VALIDATE_EMAIL) === false || !function_exists('mail')) {
+        return;
+    }
+
+    $subject = 'APK Forum lead forward failed';
+    $message = implode("\n", [
+        'Lead ID: ' . $leadId,
+        'Error: ' . $error,
+        'CRM status: ' . $crmStatus,
+        'Time UTC: ' . gmdate('c'),
+    ]);
+    @mail($email, $subject, $message, 'Content-Type: text/plain; charset=UTF-8');
+}
+
+function appendAlertLog(array $config, string $event, array $context = []): void
+{
+    try {
+        $storageDir = ensureStorageDir($config);
+        $line = json_encode([
+            'ts' => gmdate('c'),
+            'event' => $event,
+            'context' => $context,
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+        if ($line !== false) {
+            file_put_contents($storageDir . '/lead-alerts.log', $line . PHP_EOL, FILE_APPEND | LOCK_EX);
+        }
+    } catch (Throwable $error) {
+        error_log('lead_alert_log_failed: ' . $error->getMessage());
+    }
 }
 
 function isSafeHttpsUrl(string $value): bool
