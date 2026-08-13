@@ -29,9 +29,12 @@ $columns = [
     'source_url',
     'origin',
     'forward_status',
+    'retry_count',
     'crm_status',
     'forward_error',
     'forwarded_at',
+    'last_attempt_at',
+    'next_retry_at',
 ];
 
 try {
@@ -117,12 +120,35 @@ function ensureSchema(PDO $pdo): void
             user_agent TEXT,
             payload_json TEXT NOT NULL,
             tracking_json TEXT,
+            outbound_json TEXT,
             forward_status TEXT NOT NULL DEFAULT 'pending',
+            retry_count INTEGER NOT NULL DEFAULT 0,
             crm_status INTEGER,
             forward_error TEXT,
-            forwarded_at TEXT
+            forwarded_at TEXT,
+            last_attempt_at TEXT,
+            next_retry_at TEXT,
+            last_response TEXT
         )"
     );
+    ensureColumn($pdo, 'leads', 'outbound_json', 'TEXT');
+    ensureColumn($pdo, 'leads', 'retry_count', 'INTEGER NOT NULL DEFAULT 0');
+    ensureColumn($pdo, 'leads', 'last_attempt_at', 'TEXT');
+    ensureColumn($pdo, 'leads', 'next_retry_at', 'TEXT');
+    ensureColumn($pdo, 'leads', 'last_response', 'TEXT');
+}
+
+function ensureColumn(PDO $pdo, string $table, string $column, string $definition): void
+{
+    $stmt = $pdo->query('PRAGMA table_info(' . $table . ')');
+    $columns = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
+    foreach ($columns as $existingColumn) {
+        if (($existingColumn['name'] ?? '') === $column) {
+            return;
+        }
+    }
+
+    $pdo->exec('ALTER TABLE ' . $table . ' ADD COLUMN ' . $column . ' ' . $definition);
 }
 
 function cleanText($value, int $maxLength): string
